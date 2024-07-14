@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054300875369",
+    "project_id": "aditya-ff271",
+    "storage_bucket": "aditya-ff271.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054300875369:android:fb2f2c87c58acc09b9d0f8",
+        "android_client_info": {
+          "package_name": "com.example.aditya_contacts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3GN-PN8s7K0J9oJCCQXb0l77OPilrOfg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
