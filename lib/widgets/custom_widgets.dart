@@ -192,59 +192,50 @@ class Custom_ListTile extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.2,
-            image: AssetImage('asserts/adityalogo.jpg'), // Replace with your image path
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection(collectionName).snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Center(child: CircularProgressIndicator());
-            }
-            else if(snapshot.hasError){
-              return Center(child: Text('No data Found'),);
-            }
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection(collectionName).orderBy('EmployeeName').snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          else if(snapshot.hasError){
+            return Center(child: Text('No data Found'),);
+          }
 
-            var persons = snapshot.data!.docs.map((doc) {
-              return {
-                "EmployeeName": doc['EmployeeName'],
-                "EmpId": doc['EmpId'],
-                "Designation": doc['Designation'],
-                "EmailId": doc['EmailId'],
-                "MobileNo": doc['MobileNo'],
-                "Gender": doc['Gender']
-              };
-            }).toList();
+          var persons = snapshot.data!.docs.map((doc) {
+            return {
+              "EmployeeName": doc['EmployeeName'],
+              "EmpId": doc['EmpId'],
+              "Designation": doc['Designation'],
+              "EmailId": doc['EmailId'],
+              "MobileNo": doc['MobileNo'],
+              "Gender": doc['Gender']
+            };
+          }).toList();
 
-            return ListView.builder(
-              itemCount: persons.length,
-              itemBuilder: (context, index) {
-                return Custom_ListItemForEmployee(
-                  name: persons[index]["EmployeeName"]!,
-                  empid: persons[index]["EmpId"]!,
-                  ontap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileWidget(
-                        name: persons[index]["EmployeeName"]!,
-                        designation: persons[index]["Designation"]!,
-                        email: persons[index]["EmailId"]!,
-                        title: "EMPLOYEE ID:${persons[index]["EmpId"]!}",
-                        phonenumber1: persons[index]["MobileNo"]!,
-                        phonenumber2: "",
-                      ),
+          return ListView.builder(
+            itemCount: persons.length,
+            itemBuilder: (context, index) {
+              return Custom_ListItemForEmployee(
+                name: persons[index]["EmployeeName"]!,
+                empid: persons[index]["EmpId"]!,
+                ontap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileWidget(
+                      name: persons[index]["EmployeeName"]!,
+                      designation: persons[index]["Designation"]!,
+                      email: persons[index]["EmailId"]!,
+                      title: "EMPLOYEE ID:${persons[index]["EmpId"]!}",
+                      phonenumber1: persons[index]["MobileNo"]!,
+                      phonenumber2: "",
                     ),
                   ),
-                );
-              },
-            );
-          },
-        ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }

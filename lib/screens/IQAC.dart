@@ -23,51 +23,42 @@ class Iqac_Screen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.2,
-            image: AssetImage('asserts/adityalogo.jpg'), // Replace with your image path
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('IQAC').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text('No IQAC members found'));
-            }
-            final iqacList = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-            return ListView.builder(
-              itemCount: iqacList.length,
-              itemBuilder: (context, index) {
-                final iqac = iqacList[index];
-                return Custom_ListItem(
-                  name: iqac['Employee.name'] ?? 'N/A',
-                  designation: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
-                  ontap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileWidget(
-                          name: iqac['Employee.name'] ?? 'N/A',
-                          phonenumber1: iqac['Number']?.toString() ?? 'N/A',
-                          phonenumber2: '',
-                          designation: '---',
-                          email: iqac['Email.Id'] ?? 'N/A',
-                          title: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
-                        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('IQAC').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No IQAC members found'));
+          }
+          final iqacList = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+          return ListView.builder(
+            itemCount: iqacList.length,
+            itemBuilder: (context, index) {
+              final iqac = iqacList[index];
+              return Custom_ListItem(
+                name: iqac['Employee.name'] ?? 'N/A',
+                designation: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
+                ontap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileWidget(
+                        name: iqac['Employee.name'] ?? 'N/A',
+                        phonenumber1: iqac['Number']?.toString() ?? 'N/A',
+                        phonenumber2: '',
+                        designation: '---',
+                        email: iqac['Email.Id'] ?? 'N/A',
+                        title: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
                       ),
-                    );
-                  },
-                );
-              },
-            );
-          },
-        ),
+                    ),
+                  );
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }

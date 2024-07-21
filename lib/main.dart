@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.spaceAround,
                 children: [
-                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: () {}),
+                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: () {insertIqacList();}),
                 ],
               )
             ],

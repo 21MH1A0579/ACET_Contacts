@@ -132,53 +132,44 @@ class DeansScreen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.2,
-            image: AssetImage('asserts/adityalogo.jpg'), // Replace with your image path
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('deans').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text('No Deans Found'));
-            }
-            final deans = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-            return ListView.builder(
-              itemCount: deans.length,
-              itemBuilder: (context, index) {
-                final dean = deans[index];
-                return Custom_ListItem(
-                  name: dean['name']!,
-                  designation: dean['designation']!,
-                  ontap: () {
-                    if (dean['phnumber1'] != '') {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfileWidget(
-                            name: dean['name']!,
-                            phonenumber1: dean['phnumber1']!,
-                            phonenumber2: dean['phnumber2']!,
-                            designation: dean['designation']!,
-                            email: dean['email']!,
-                            title: "DEANS",
-                          ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('deans').orderBy('position').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No Deans Found'));
+          }
+          final deans = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+          return ListView.builder(
+            itemCount: deans.length,
+            itemBuilder: (context, index) {
+              final dean = deans[index];
+              return Custom_ListItem(
+                name: dean['name']!,
+                designation: dean['designation']!,
+                ontap: () {
+                  if (dean['phnumber1'] != '') {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileWidget(
+                          name: dean['name']!,
+                          phonenumber1: dean['phnumber1']!,
+                          phonenumber2: dean['phnumber2']!,
+                          designation: dean['designation']!,
+                          email: dean['email']!,
+                          title: "DEANS",
                         ),
-                      );
-                    }
-                  },
-                );
-              },
-            );
-          },
-        ),
+                      ),
+                    );
+                  }
+                },
+              );
+            },
+          );
+        },
       ),
     );
   }

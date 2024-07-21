@@ -24,35 +24,26 @@ class Committee_Screen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.2,
-            image: AssetImage('asserts/adityalogo.jpg'), // Replace with your image path
-            fit: BoxFit.fitWidth,
-          ),
-        ),
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('Committee').snapshots(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text('No Committees Data Found'));
-            }
-            final committees = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-            return ListView.builder(
-              itemCount: committees.length,
-              itemBuilder: (context, index) {
-                final committee = committees[index];
-                return Custom_DepartMentItem(name: committee["Committee_Name"], ontap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Committee_ProfileWidget(phonenumber1: committee['MobileNo1'], phonenumber2: committee['MobileNo2'], name1: committee['Coordinator1_Name'], name2: committee['Coordinator2_Name'], committe_name: committee['Committee_Name'])));
-                });
-              },
-            );
-          },
-        ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('Committee').snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text('No Committees Data Found'));
+          }
+          final committees = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+          return ListView.builder(
+            itemCount: committees.length,
+            itemBuilder: (context, index) {
+              final committee = committees[index];
+              return Custom_DepartMentItem(name: committee["Committee_Name"], ontap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>Committee_ProfileWidget(phonenumber1: committee['MobileNo1'], phonenumber2: committee['MobileNo2'], name1: committee['Coordinator1_Name'], name2: committee['Coordinator2_Name'], committe_name: committee['Committee_Name'])));
+              });
+            },
+          );
+        },
       ),
     );
   }

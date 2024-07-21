@@ -9,15 +9,15 @@ class Departments_Screen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Map<String, String> departments = {
-      'Computer Science & Engineering': "ComputerScienceEngineering",
+      'AI & ML and DS': "AIandML_Engineering",
+      'Computer Science & Engineering': "Computer_Science_Engineering",
       'Civil Engineering': "Civil_Engineering",
-      'Mechanical Engineering': "Mechanical_Engineering",
-      'Electrical & Electronics Engineering': "Electrical_Engineering",
-      'Electronics & Communication Engineering': "Electronics_Engineering",
-      'AI & ML and DS': "Artificial_Engineering",
-      'Information Technology': "Information_Technology",
+      'Electrical & Electronics Engineering': "ElectricalandElectronicsEngineering",
+      'Electronics & Communication Engineering': "ElectronicsaandCommunicationEngineering",
       'Humanities and Basic Sciences1': "HBS1",
-      'Humanities and Basic Sciences2': "HBS2"
+      'Humanities and Basic Sciences2': "HBS2",
+      'Information Technology': "Information_Technology",
+    'Mechanical Engineering': "Mechanical_Engineering"
     };
     return Scaffold(
       appBar:  AppBar(
