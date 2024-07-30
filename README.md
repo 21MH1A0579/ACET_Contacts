@@ -1,4 +1,4 @@
-# ACET CONTACTS Mobile Application
+# ACET CONTACTS (MOBILE APPLICATION)
 
 ## Overview
 **ACET CONTACTS** is a mobile application designed to provide comprehensive contact information for the staff of Aditya College of Engineering and Technology. Built using Flutter and Firebase, the application aims to streamline communication by offering easily accessible contact details categorized by departments, HODs, Deans, the Principal, and various committees. Users can also search for specific staff members by name or employee ID.
