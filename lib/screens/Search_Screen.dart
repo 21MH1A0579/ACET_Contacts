@@ -1,9 +1,10 @@
-import 'package:aditya_contacts/widgets/custom_widgets.dart';
-import 'package:aditya_contacts/widgets/profile_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+import '../widgets/constants.dart';
+import '../widgets/custom_widgets.dart';
+import '../widgets/profile_widget.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -58,7 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _foundUsers = users;
         });
       });
-    }else if (RegExp(r'^\d+$').hasMatch(enteredKeyword)) {
+    } else if (RegExp(r'^\d+$').hasMatch(enteredKeyword)) {
       // If the entered keyword is a number, filter based on "EmpId"
       _allUsers.then((users) {
         setState(() {
@@ -69,8 +70,7 @@ class _SearchScreenState extends State<SearchScreen> {
               .toList();
         });
       });
-    }
-    else {
+    } else {
       _allUsers.then((users) {
         setState(() {
           _foundUsers = users
@@ -86,72 +86,101 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: [
-            const SizedBox(
-              height: 20,
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          foregroundColor: Colors.white,
+          centerTitle: true,
+          title: const Text(
+            "SEARCH",
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontStyle: FontStyle.italic,
             ),
-            TextField(
-              onChanged: (value) => _runFilter(value),
-              decoration: InputDecoration(
-                labelText: 'Search',
-                labelStyle: TextStyle(color: Colors.orange),
-                suffixIcon: Icon(Icons.search, color: Colors.orange),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.orange),
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.orange),
-                  borderRadius: BorderRadius.circular(30.0),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30.0),
+          ),
+          backgroundColor: primarycolor,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              TextField(
+
+                onChanged: (value) => _runFilter(value),
+                decoration: InputDecoration(
+                  labelText: 'Enter Employee ID or Employee Name',
+                  labelStyle: TextStyle(color: Colors.orange),
+                  suffixIcon: Icon(Icons.search, color: Colors.orange),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.orange),
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.orange),
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: FutureBuilder<List<DocumentSnapshot<Map<String, dynamic>>>>(
-                future: _allUsers,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(child: Text('Error loading data'));
-                  } else if (_foundUsers.isEmpty) {
-                    return Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(50.0),
-                        child: Column(
-                          children: [
-                            SvgPicture.asset("asserts/no-search-result.svg",
-                              colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn,),
-                              fit: BoxFit.fitWidth,
+              const SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: FutureBuilder<List<DocumentSnapshot<Map<String, dynamic>>>>(
+                  future: _allUsers,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return const Center(child: Text('Error loading data'));
+                    } else if (_foundUsers.isEmpty) {
+                      return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(50.0),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset("asserts/no-search-result.svg",
+                                  colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn,),
+                                  fit: BoxFit.fitWidth,
+                                ),
+                                Text("NO DATA FOUND",style: TextStyle(fontSize: 33,fontWeight: FontWeight.bold,color: Colors.red),)
+                              ],
                             ),
-                            Text("NO DATA FOUND",style: TextStyle(fontSize: 33,fontWeight: FontWeight.bold,color: Colors.red),)
-                          ],
-                        ),
-                      )
-                    );
-                  } else {
-                    return ListView.builder(
-                      itemCount: _foundUsers.length,
-                      itemBuilder: (context, index) {
-                        var user = _foundUsers[index].data();
-                        return Custom_ListItemForEmployee(name: user?['EmployeeName'], ontap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>ProfileWidget(name: user?['EmployeeName'], designation: user?['Designation'], email: user?['EmailId'], title: "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY", phonenumber1: user?['MobileNo'], phonenumber2: '_'))), empid: user?['EmpId']);
-                      },
-                    );
-                  }
-                },
+                          )
+                      );
+                    } else {
+                      return ListView.builder(
+                        itemCount: _foundUsers.length,
+                        itemBuilder: (context, index) {
+                          var user = _foundUsers[index].data();
+                          return Custom_ListItemForEmployee(
+                              name: user?['EmployeeName'],
+                              ontap: () => Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => ProfileWidget(
+                                      name: user?['EmployeeName'],
+                                      designation: user?['Designation'],
+                                      email: user?['EmailId'],
+                                      title: "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
+                                      phonenumber1: user?['MobileNo'],
+                                      phonenumber2: '_'
+                                  )
+                              )),
+                              empid: user?['EmpId']
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

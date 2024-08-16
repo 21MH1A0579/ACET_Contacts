@@ -1,4 +1,4 @@
-import 'package:aditya_contacts/provider/mongodb.dart';
+import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
 import 'package:aditya_contacts/screens/info.dart';
@@ -231,7 +231,7 @@ class HomeScreen extends StatelessWidget {
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.spaceAround,
                 children: [
-                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: () {insertIqacList();}),
+                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLoginPage())),),
                 ],
               )
             ],
