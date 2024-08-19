@@ -1,7 +1,6 @@
 import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
-import 'package:aditya_contacts/screens/info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aditya_contacts/screens/IQAC.dart';
 import 'package:flutter/material.dart';

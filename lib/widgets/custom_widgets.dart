@@ -27,10 +27,10 @@ class Custom_ListItem extends StatelessWidget {
       child: ListTile(
        onTap: ontap,
        selectedColor: primarycolor,
-        tileColor:Colors.grey.shade200,
-       contentPadding:  const EdgeInsets.only(left: 20,right: 5,top: 2,bottom: 2),
+        tileColor:Colors.white,
+       contentPadding:  const EdgeInsets.only(left: 20,right: 20,top: 2,bottom: 2),
        shape: RoundedRectangleBorder(
-         side: const BorderSide(color: Colors.black12,width: 2),
+         side: const BorderSide(color: Colors.black12,width: 0.85),
            borderRadius: BorderRadius.circular(10)),
        title: Text(name,style:const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
        subtitle: Text(designation,style: const TextStyle(fontSize: 19),),
@@ -54,7 +54,7 @@ class Custom_DepartMentItem extends StatelessWidget {
       child: ListTile(
         onTap: ontap,
         selectedColor: primarycolor,
-        tileColor:Colors.grey.shade200,
+        tileColor:Colors.white,
         contentPadding:  const EdgeInsets.only(left: 20,right: 5,top: 2,bottom: 2),
         shape: RoundedRectangleBorder(
             side: const BorderSide(color: Colors.black12,width: 2),
@@ -257,10 +257,10 @@ class Custom_ListItemForEmployee extends StatelessWidget {
       child: ListTile(
         onTap: ontap,
         selectedColor: primarycolor,
-        tileColor:Colors.black12,
-        contentPadding:  const EdgeInsets.only(left: 20,right: 5,top: 2,bottom: 2),
+        tileColor:Colors.white,
+        contentPadding:  const EdgeInsets.only(left: 20,right: 20,top: 2,bottom: 2),
         shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black12,width: 2),
+            side: const BorderSide(color: Colors.black12,width: 0.85),
             borderRadius: BorderRadius.circular(10)),
         title: Text(name,style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
         subtitle: Text("EMPLOYEE ID:$empid",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),

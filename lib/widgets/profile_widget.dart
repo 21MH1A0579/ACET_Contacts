@@ -113,9 +113,15 @@ class ProfileWidget extends StatelessWidget {
 
 
 
-class Committee_ProfileWidget extends StatelessWidget {
+class Committee_ProfileWidget extends StatefulWidget {
   final String name1,name2,phonenumber1,phonenumber2,committe_name;
   const Committee_ProfileWidget({super.key,required this.phonenumber1, required this.phonenumber2, required this.name1, required this.name2, required this.committe_name});
+
+  @override
+  State<Committee_ProfileWidget> createState() => _Committee_ProfileWidgetState();
+}
+
+class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     Future<void> makeUricall(String scheme,String address,) async {
@@ -136,7 +142,7 @@ class Committee_ProfileWidget extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
         title:  Text(
-          committe_name,
+          widget.committe_name,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -165,7 +171,7 @@ class Committee_ProfileWidget extends StatelessWidget {
                       ),
                       const SizedBox(height: 10,),
                       Text(
-                        name1,
+                        widget.name1,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
 
                       ),
@@ -175,7 +181,7 @@ class Committee_ProfileWidget extends StatelessWidget {
 
                       ),
                       Text(
-                        name2,
+                        widget.name2,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
 
                       ),
@@ -200,17 +206,76 @@ class Committee_ProfileWidget extends StatelessWidget {
               ],
             ),
             const Divider(),
-            ListTile(
-              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',phonenumber1)),
-              title: Text(phonenumber1,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
-              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',phonenumber1)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text("Contact Details",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),),
+            ),
+            Divider(thickness: 2,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ExpansionTile(
+                backgroundColor: Colors.blue.shade100,
+                iconColor: Colors.red,
+                initiallyExpanded: true,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)
+                ),
+                collapsedShape:  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15)
+                ),
+                title: Text(widget.name1,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),),
+                children: [
+                  Column(
+
+                    children: [
+                      Divider(color: Colors.black,),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',widget.phonenumber1)),
+                          title: Text(widget.phonenumber1,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
+                          trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',widget.phonenumber1)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+
+              ),
             ),
             Divider(),
-            ListTile(
-              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',phonenumber2)),
-              title: Text(phonenumber2,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
-              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',phonenumber2)),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ExpansionTile(
+                backgroundColor: Colors.blue.shade100,
+                iconColor: Colors.red,
+                initiallyExpanded: true,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
+                ),
+                collapsedShape:  RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15)
             ),
+                title: Text(widget.name2,style: TextStyle(fontSize: 22,fontWeight: FontWeight.w500),),
+                children: [
+                  Column(
+                    children: [
+                      Divider(color: Colors.black,),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',widget.phonenumber2)),
+                          title: Text(widget.phonenumber2,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
+                          trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',widget.phonenumber2)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+
+              ),
+            ),
+            SizedBox(height: 50,)
           ],
         ),
       ),
