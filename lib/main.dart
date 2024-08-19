@@ -1,6 +1,7 @@
 import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
+import 'package:aditya_contacts/screens/info.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aditya_contacts/screens/IQAC.dart';
 import 'package:flutter/material.dart';
@@ -136,7 +137,9 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.orange.shade800,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>Info_Page()));
+            },
             icon: const Icon(Icons.info_outlined, color: Colors.white, size: 35),
           )
         ],

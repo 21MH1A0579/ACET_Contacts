@@ -145,11 +145,15 @@ class _SearchScreenState extends State<SearchScreen> {
                             padding: const EdgeInsets.all(50.0),
                             child: Column(
                               children: [
-                                SvgPicture.asset("asserts/no-search-result.svg",
-                                  colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn,),
-                                  fit: BoxFit.fitWidth,
+                                SizedBox(
+                                  height:150,
+                                  width: 150,
+                                  child: SvgPicture.asset("asserts/no-search-result.svg",
+                                    colorFilter: ColorFilter.mode(Colors.red, BlendMode.srcIn,),
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
-                                Text("NO DATA FOUND",style: TextStyle(fontSize: 33,fontWeight: FontWeight.bold,color: Colors.red),)
+                                Text("NO DATA FOUND ",style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold,color: Colors.red),)
                               ],
                             ),
                           )
