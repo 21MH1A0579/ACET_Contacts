@@ -196,10 +196,10 @@ class Custom_ListTile extends StatelessWidget {
         stream: FirebaseFirestore.instance.collection(collectionName).orderBy('EmployeeName').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: primarycolor,));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("No Data Found"));
+            return Center(child: CircularProgressIndicator(color: primarycolor,));
           }
           var persons = snapshot.data!.docs.map((doc) {
             return {

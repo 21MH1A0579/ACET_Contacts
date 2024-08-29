@@ -136,10 +136,10 @@ class DeansScreen extends StatelessWidget {
         stream: FirebaseFirestore.instance.collection('deans').orderBy('position').snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: primarycolor,));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text('No Deans Found'));
+            return Center(child: CircularProgressIndicator(color: primarycolor,));
           }
           final deans = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
           return ListView.builder(
