@@ -11,6 +11,8 @@ import 'package:aditya_contacts/screens/departments.dart';
 import 'package:aditya_contacts/screens/principal.dart';
 import 'package:aditya_contacts/widgets/custom_container.dart';
 
+import 'dummy.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -221,7 +223,9 @@ class HomeScreen extends StatelessWidget {
                   Custom_Container(
                       imgaddress: "asserts/emergency.svg",
                       title: "Emergency",
-                      onTap: () {}),
+                      onTap: () async{
+                        insert_principal_data();
+                      }),
                   Custom_Container(
                       imgaddress: "asserts/searchperson.svg",
                       title: "Search",

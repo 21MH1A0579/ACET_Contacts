@@ -7,7 +7,7 @@ import 'constants.dart';
 class Custom_IconButton extends StatelessWidget {
  final IconData icon;
   final VoidCallback function;
-   const Custom_IconButton({super.key,required this.icon,required this.function});
+   const Custom_IconButton( {super.key,required this.icon,required this.function});
 
   @override
   Widget build(BuildContext context) {

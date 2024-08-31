@@ -1,13 +1,63 @@
-
 import 'package:aditya_contacts/widgets/custom_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
 
-class PrincipalScreen extends StatelessWidget {
+class PrincipalScreen extends StatefulWidget {
   const PrincipalScreen({super.key});
 
-  Future<void> _makeUricall(String scheme, String address,) async {
+  @override
+  State<PrincipalScreen> createState() => _PrincipalScreenState();
+}
+
+class _PrincipalScreenState extends State<PrincipalScreen> {
+  Map<String, dynamic>? textdata;
+  Map<String, dynamic>? imgdata;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    GetPrincipalData();
+  }
+
+  Future<void> GetPrincipalData() async {
+    try {
+      DocumentSnapshot snapshot1 = await FirebaseFirestore.instance
+          .collection("principal")
+          .doc("principal")
+          .get();
+      DocumentSnapshot snapshot2 = await FirebaseFirestore.instance
+          .collection("imagedata")
+          .doc("principal")
+          .get();
+
+      if (snapshot1.exists) {
+        setState(() {
+          textdata = snapshot1.data() as Map<String, dynamic>?;
+        });
+      } else {
+        print("No data found in 'principal' document.");
+      }
+
+      if (snapshot2.exists) {
+        setState(() {
+          imgdata = snapshot2.data() as Map<String, dynamic>?;
+        });
+      } else {
+        print("No data found in 'imagedata' document.");
+      }
+    } catch (e) {
+      print('Failed to load data: $e');
+    } finally {
+      setState(() {
+        isLoading = false; // Set loading to false when data fetching is complete
+      });
+    }
+  }
+
+  Future<void> _makeUricall(String scheme, String address) async {
     final Uri launchUri = Uri(
       scheme: scheme,
       path: address,
@@ -19,28 +69,8 @@ class PrincipalScreen extends StatelessWidget {
     }
   }
 
-  Future<void> _addContact(String phoneNumber) async {
-    final Uri uri = Uri(
-      scheme: 'content',
-      path: 'addcontact',
-      queryParameters: {
-        'phone': phoneNumber,
-      },
-    );
-
-    if (await canLaunch(uri.toString())) {
-      await launch(uri.toString());
-    } else {
-      throw 'Could not launch $uri';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    const String phonenumber = "+91 9000476662";
-    const String email = "principal@acet.ac.in";
-
-    // Get the size of the screen
     final size = MediaQuery.of(context).size;
     final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
 
@@ -58,7 +88,9 @@ class PrincipalScreen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: SingleChildScrollView(
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: primarycolor,))
+          : SingleChildScrollView(
         child: Column(
           children: [
             Padding(
@@ -69,25 +101,39 @@ class PrincipalScreen extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ClipOval(
-                        child: CircleAvatar(
-                          radius: isPortrait ? size.width/3.17 : size.width * 0.15,
-                          backgroundColor: Colors.orange.shade500,
-                          child: Image.asset("asserts/principal.jpg"),
+                      if (imgdata != null)
+                        ClipOval(
+                          child: CircleAvatar(
+                            radius: isPortrait ? size.width / 3.17 : size.width * 0.15,
+                            backgroundColor: Colors.orange.shade500,
+                            //backgroundImage: AssetImage("assets/no_image.png"),
+                            child: Image.network(
+                              imgdata?['imgurl'] ?? '',
+                              errorBuilder: (context, error, stackTrace) => Image.asset('assets/no_image.png'),
+                              loadingBuilder: (context, child, progress) {
+                                if (progress == null) {
+                                  return child;
+                                } else {
+                                  return Center(child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
+                          ),
                         ),
-                      ),
-                      const Text(
-                        "DR A RAMESH",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      const Text(
-                        "PRINCIPAL",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                      ),
-                      const Text(
-                        "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
+                      if (textdata != null) ...[
+                        Text(
+                          textdata!['EmployeeName'] ?? 'No Name',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                        ),
+                        Text(
+                          textdata!['Designation'] ?? 'No Designation',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        const Text(
+                          "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                      ]
                     ],
                   )
                 ],
@@ -99,23 +145,38 @@ class PrincipalScreen extends StatelessWidget {
               children: [
                 Custom_IconButton(icon: Icons.star_border, function: () {}),
                 Custom_IconButton(icon: Icons.edit, function: () => {}),
-                Custom_IconButton(icon: Icons.person_add_alt, function: () async {
-                  await _addContact(phonenumber);
-                }),
+                Custom_IconButton(icon: Icons.person_add_alt, function: () => {}),
               ],
             ),
             const Divider(),
-            ListTile(
-              leading: Custom_IconButton(icon: Icons.message_outlined, function: () => _makeUricall('sms', phonenumber)),
-              title: const Text(phonenumber, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
-              trailing: Custom_IconButton(icon: Icons.phone, function: () => _makeUricall('tel', phonenumber)),
-            ),
+            if (textdata != null)
+              ListTile(
+                leading: Custom_IconButton(
+                  icon: Icons.message_outlined,
+                  function: () => _makeUricall('sms', textdata!['MobileNo'] ?? ''),
+                ),
+                title: Text(
+                  textdata!['MobileNo'] ?? 'No Mobile No',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                ),
+                trailing: Custom_IconButton(
+                  icon: Icons.phone,
+                  function: () => _makeUricall('tel', textdata!['MobileNo'] ?? ''),
+                ),
+              ),
             const Divider(),
-            ListTile(
-              leading: Text("Email", style: TextStyle(fontSize: 20, color: primarycolor)),
-              title: const Text(email, style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal)),
-              trailing: Custom_IconButton(icon: Icons.email_outlined, function: () => _makeUricall('mailto', email)),
-            )
+            if (textdata != null)
+              ListTile(
+                leading: Text("Email", style: TextStyle(fontSize: 20, color: primarycolor)),
+                title: Text(
+                  textdata!['EmailId'] ?? 'No Email',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.normal),
+                ),
+                trailing: Custom_IconButton(
+                  icon: Icons.email_outlined,
+                  function: () => _makeUricall('mailto', textdata!['EmailId'] ?? ''),
+                ),
+              ),
           ],
         ),
       ),

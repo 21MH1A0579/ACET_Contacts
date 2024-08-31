@@ -41,6 +41,7 @@ dependencies:
   url_launcher:
   flutter_svg:
   connectivity_plus:
+  image_picker:
 
 dev_dependencies:
   flutter_test:
