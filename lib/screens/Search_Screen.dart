@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../widgets/constants.dart';
 import '../widgets/custom_widgets.dart';
 import '../widgets/profile_widget.dart';
@@ -18,7 +17,6 @@ class _SearchScreenState extends State<SearchScreen> {
   List<DocumentSnapshot<Map<String, dynamic>>> _foundUsers = [];
 
   Future<List<DocumentSnapshot<Map<String, dynamic>>>> fetchAllUsers() async {
-    // Define your map of departments
     Map<String, String> departments = {
       'AI & ML and DS': "AIandML_Engineering",
       'Computer Science & Engineering': "Computer_Science_Engineering",
@@ -31,10 +29,14 @@ class _SearchScreenState extends State<SearchScreen> {
       'Mechanical Engineering': "Mechanical_Engineering"
     };
 
+    List<Future<QuerySnapshot<Map<String, dynamic>>>> futures = departments.values
+        .map((collectionName) => FirebaseFirestore.instance.collection(collectionName).get())
+        .toList();
+
+    List<QuerySnapshot<Map<String, dynamic>>> snapshots = await Future.wait(futures);
     List<DocumentSnapshot<Map<String, dynamic>>> allUsers = [];
 
-    for (String collectionName in departments.values) {
-      QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance.collection(collectionName).get();
+    for (var snapshot in snapshots) {
       allUsers.addAll(snapshot.docs);
     }
 
@@ -60,7 +62,6 @@ class _SearchScreenState extends State<SearchScreen> {
         });
       });
     } else if (RegExp(r'^\d+$').hasMatch(enteredKeyword)) {
-      // If the entered keyword is a number, filter based on "EmpId"
       _allUsers.then((users) {
         setState(() {
           _foundUsers = users
@@ -109,7 +110,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 height: 20,
               ),
               TextField(
-
                 onChanged: (value) => _runFilter(value),
                 decoration: InputDecoration(
                   labelText: 'Enter Employee ID or Employee Name',

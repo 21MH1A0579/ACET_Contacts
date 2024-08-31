@@ -1,9 +1,10 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+// committee_screen.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/constants.dart';
 import '../widgets/custom_widgets.dart';
 import '../widgets/profile_widget.dart';
+import '../provider/provider.dart'; // Adjust the path as needed
 
 class Committee_Screen extends StatelessWidget {
   const Committee_Screen({super.key});
@@ -24,25 +25,44 @@ class Committee_Screen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('Committee').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
+      body: Consumer<CommitteeDataProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: primarycolor),
+            );
+          } else if (provider.committees.isEmpty) {
+            return Center(
+              child: Text(
+                "No Committee data available",
+                style: TextStyle(fontSize: 18, color: primarycolor),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: provider.committees.length,
+              itemBuilder: (context, index) {
+                final committee = provider.committees[index];
+                return Custom_DepartMentItem(
+                  name: committee["Committee_Name"] ?? 'No Name',
+                  ontap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Committee_ProfileWidget(
+                          phonenumber1: committee['MobileNo1'] ?? '',
+                          phonenumber2: committee['MobileNo2'] ?? '',
+                          name1: committee['Coordinator1_Name'] ?? 'No Name',
+                          name2: committee['Coordinator2_Name'] ?? 'No Name',
+                          committe_name: committee['Committee_Name'] ?? 'No Committee Name',
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
           }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
-          }
-          final committees = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-          return ListView.builder(
-            itemCount: committees.length,
-            itemBuilder: (context, index) {
-              final committee = committees[index];
-              return Custom_DepartMentItem(name: committee["Committee_Name"], ontap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>Committee_ProfileWidget(phonenumber1: committee['MobileNo1'], phonenumber2: committee['MobileNo2'], name1: committee['Coordinator1_Name'], name2: committee['Coordinator2_Name'], committe_name: committee['Committee_Name'])));
-              });
-            },
-          );
         },
       ),
     );

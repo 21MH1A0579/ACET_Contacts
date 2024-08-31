@@ -1,3 +1,4 @@
+import 'package:aditya_contacts/provider/provider.dart';
 import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
@@ -10,6 +11,7 @@ import 'package:aditya_contacts/screens/Hods.dart';
 import 'package:aditya_contacts/screens/departments.dart';
 import 'package:aditya_contacts/screens/principal.dart';
 import 'package:aditya_contacts/widgets/custom_container.dart';
+import 'package:provider/provider.dart';
 
 import 'dummy.dart';
 
@@ -23,7 +25,18 @@ void main() async{
       projectId: "aditya-ff271",
     ),
   );
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => PrincipalDataProvider()),
+        ChangeNotifierProvider(create: (_) =>   DeansDataProvider()),
+        ChangeNotifierProvider(create: (_) =>   HodsDataProvider()),
+        ChangeNotifierProvider(create: (_) => CommitteeDataProvider()),
+        ChangeNotifierProvider(create: (_) => IqacDataProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

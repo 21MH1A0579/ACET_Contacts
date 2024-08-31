@@ -1,8 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// deans_screen.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/provider.dart';
 import '../widgets/constants.dart';
 import '../widgets/custom_widgets.dart';
 import '../widgets/profile_widget.dart';
+ // Adjust the path as needed
 
 class DeansScreen extends StatelessWidget {
   const DeansScreen({Key? key}) : super(key: key);
@@ -23,43 +26,48 @@ class DeansScreen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('deans').orderBy('position').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
-          }
-          final deans = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-          return ListView.builder(
-            itemCount: deans.length,
-            itemBuilder: (context, index) {
-              final dean = deans[index];
-              return Custom_ListItem(
-                name: dean['name']!,
-                designation: dean['designation']!,
-                ontap: () {
-                  if (dean['phnumber1'] != '') {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfileWidget(
-                          name: dean['name']!,
-                          phonenumber1: dean['phnumber1']!,
-                          phonenumber2: dean['phnumber2']!,
-                          designation: dean['designation']!,
-                          email: dean['email']!,
-                          title: "DEANS",
+      body: Consumer<DeansDataProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: primarycolor),
+            );
+          } else if (provider.deans.isEmpty) {
+            return Center(
+              child: Text(
+                "No Deans data available",
+                style: TextStyle(fontSize: 18, color: primarycolor),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: provider.deans.length,
+              itemBuilder: (context, index) {
+                final dean = provider.deans[index];
+                return Custom_ListItem(
+                  name: dean['name'] ?? 'No Name',
+                  designation: dean['designation'] ?? 'No Designation',
+                  ontap: () {
+                    if (dean['phnumber1'] != null && dean['phnumber1']!.isNotEmpty) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfileWidget(
+                            name: dean['name']!,
+                            phonenumber1: dean['phnumber1']!,
+                            phonenumber2: dean['phnumber2']!,
+                            designation: dean['designation']!,
+                            email: dean['email']!,
+                            title: "DEANS",
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                },
-              );
-            },
-          );
+                      );
+                    }
+                  },
+                );
+              },
+            );
+          }
         },
       ),
     );

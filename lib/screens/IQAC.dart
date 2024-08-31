@@ -1,8 +1,10 @@
-import 'package:aditya_contacts/widgets/custom_widgets.dart';
-import 'package:aditya_contacts/widgets/profile_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// iqac_screen.dart
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../widgets/constants.dart';
+import '../widgets/custom_widgets.dart';
+import '../widgets/profile_widget.dart';
+import '../provider/provider.dart'; // Adjust the path as needed
 
 class Iqac_Screen extends StatelessWidget {
   const Iqac_Screen({super.key});
@@ -23,41 +25,46 @@ class Iqac_Screen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection('IQAC').snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
-          }
-          final iqacList = snapshot.data!.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
-          return ListView.builder(
-            itemCount: iqacList.length,
-            itemBuilder: (context, index) {
-              final iqac = iqacList[index];
-              return Custom_ListItem(
-                name: iqac['Employee.name'] ?? 'N/A',
-                designation: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
-                ontap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfileWidget(
-                        name: iqac['Employee.name'] ?? 'N/A',
-                        phonenumber1: iqac['Number']?.toString() ?? 'N/A',
-                        phonenumber2: '',
-                        designation: '---',
-                        email: iqac['Email.Id'] ?? 'N/A',
-                        title: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
+      body: Consumer<IqacDataProvider>(
+        builder: (context, provider, child) {
+          if (provider.isLoading) {
+            return Center(
+              child: CircularProgressIndicator(color: primarycolor),
+            );
+          } else if (provider.iqacList.isEmpty) {
+            return Center(
+              child: Text(
+                "No IQAC data available",
+                style: TextStyle(fontSize: 18, color: primarycolor),
+              ),
+            );
+          } else {
+            return ListView.builder(
+              itemCount: provider.iqacList.length,
+              itemBuilder: (context, index) {
+                final iqac = provider.iqacList[index];
+                return Custom_ListItem(
+                  name: iqac['Employee.name'] ?? 'N/A',
+                  designation: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
+                  ontap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfileWidget(
+                          name: iqac['Employee.name'] ?? 'N/A',
+                          phonenumber1: iqac['Number']?.toString() ?? 'N/A',
+                          phonenumber2: '',
+                          designation: '---',
+                          email: iqac['Email.Id'] ?? 'N/A',
+                          title: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
+                        ),
                       ),
-                    ),
-                  );
-                },
-              );
-            },
-          );
+                    );
+                  },
+                );
+              },
+            );
+          }
         },
       ),
     );
