@@ -38,7 +38,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
           radius: 100,
           backgroundColor: Colors.grey,
           foregroundImage:
-              _pickedImageFile != null ? FileImage(_pickedImageFile!) : null,
+              _pickedImageFile != null ? FileImage(_pickedImageFile!) :AssetImage("asserts/no_image.png") ,
         ),
         TextButton.icon(
           onPressed: _pickImage,
