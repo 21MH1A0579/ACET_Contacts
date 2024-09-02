@@ -45,7 +45,7 @@ class AdminMainPage extends StatelessWidget {
               onPickImage: (pickedImg) {
                 _pickedImg = pickedImg;
                 print(pickedImg.path);
-              },
+              }, bgimg: false,
             ),
           ),
           IconButton(

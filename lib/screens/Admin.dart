@@ -7,21 +7,6 @@ import '../widgets/constants.dart';
 import '../widgets/textfeild.dart';
 
 
-// DropdownButton<String>(
-// hint: Text('Select a department'),
-// value: selectedDepartment,
-// onChanged: (String? newValue) {
-// setState(() {
-// selectedDepartment = newValue;
-// });
-// },
-// items: departments.keys.map((String department) {
-// return DropdownMenuItem<String>(
-// value: department,
-// child: Text(department),
-// );
-// }).toList(),
-// ),
 
 class AdminLoginPage extends StatefulWidget {
   AdminLoginPage({super.key});
@@ -102,9 +87,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             context,
             MaterialPageRoute(
               builder: (context) => ProfileUpdateScreen(
+                Username:username,
                 data: snapshot, department: UserDepartment,
-                IsImage:isimage,
-                imagedata: isimage?Imagedata:null,
+                IsAlreadyImage:isimage,
+                imagedata: isimage==true?Imagedata:null,
 
               ),
             ),

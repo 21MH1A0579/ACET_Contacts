@@ -1,17 +1,19 @@
-import 'dart:ffi';
 
+import 'dart:io';
 import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/widgets/user_image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class ProfileUpdateScreen extends StatefulWidget {
   final DocumentSnapshot<Object?>? data; // Changed from Object? to Map<String, dynamic> for better handling
   final String? department;
   final DocumentSnapshot<Object?>? imagedata;
-  final bool? IsImage;
-
-  ProfileUpdateScreen({super.key, required this.data, required this.department, this.imagedata, required this.IsImage});
+  final bool? IsAlreadyImage;
+  final String? Username;
+  ProfileUpdateScreen({super.key, required this.data, required this.department, this.imagedata, required this.IsAlreadyImage, required this.Username});
 
   @override
   _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState();
@@ -32,6 +34,52 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     _employeeNameController.text = widget.data?['EmployeeName'] ?? '';
   }
 
+  File? _pickedImg;
+
+  Future<void> UploadImage() async {
+    try {
+      // Initialize Firebase if not already initialized (depends on how you've structured your app)
+      await Firebase.initializeApp(); // Ensure Firebase is initialized
+      
+      FirebaseStorage storage = FirebaseStorage.instanceFor(bucket: 'gs://aditya-ff271.appspot.com');
+      final storageRef = storage.ref().child(widget.department!).child(
+          '${widget.Username!}.jpg');
+      if (_pickedImg == null) {
+        print("No image selected.");
+        return;
+      }
+      if(widget.IsAlreadyImage!)
+        {
+          try {
+            storageRef.delete();
+            await storageRef.putFile(_pickedImg!);
+            final imageUrl = await storageRef.getDownloadURL();
+            Map<String,dynamic>newimagedata;
+            newimagedata={'imgurl':imageUrl};
+            await FirebaseFirestore.instance.collection("imagedata").doc(
+                widget.Username).update(newimagedata);
+
+          }
+          catch(e){
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating Image: $e')));
+          }
+
+        }else{
+        await storageRef.putFile(_pickedImg!);
+        final imageUrl = await storageRef.getDownloadURL();
+        Map<String,dynamic>newinsertingimagedata;
+        newinsertingimagedata={
+          'empid':widget.Username,
+          'imagepath':'${widget.department}/${widget.Username}.jpg',
+          'imgurl':imageUrl
+        };
+       await FirebaseFirestore.instance.collection('imagedata').doc(widget.Username).set(newinsertingimagedata);
+
+      }
+    } catch (e) {
+      print('Failed to upload image: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +103,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
-                      // UserImagePicker(onPickImage: (e){},bgimg:widget.IsImage,imgdata:widget),
+                      UserImagePicker(
+                        onPickImage: (e) {
+                          _pickedImg=e;
+                        },
+                        bgimg: widget.IsAlreadyImage ?? false,
+                        imgdata: widget.imagedata,
+                      ),
                       _buildTextField(
                         controller: _mobileController,
                         label: 'Mobile Number',
@@ -95,9 +149,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const Divider(),
-                      Text('EmpId: ${widget.data?['EmpId']}', style: _infoTextStyle()),
-                      Text('Designation: ${widget.data?['Designation']}', style: _infoTextStyle()),
-                      Text('Gender: ${widget.data?['Gender']}', style: _infoTextStyle()),
+                      Text('EmpId: ${widget.data?['EmpId'] ?? 'N/A'}', style: _infoTextStyle()),
+                      Text('Designation: ${widget.data?['Designation'] ?? 'N/A'}', style: _infoTextStyle()),
+                      Text('Gender: ${widget.data?['Gender'] ?? 'N/A'}', style: _infoTextStyle()),
+                      Text('Department: ${widget.department ?? 'N/A'}', style: _infoTextStyle()),
                     ],
                   ),
                 ),
@@ -106,8 +161,8 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
               Center(
                 child: ElevatedButton.icon(
                   onPressed: _updateProfile,
-                  icon: const Icon(Icons.save,color: Colors.white,),
-                  label: const Text('Save Changes',style: TextStyle(color: Colors.white),),
+                  icon: const Icon(Icons.save, color: Colors.white),
+                  label: const Text('Save Changes', style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -117,8 +172,6 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                   ),
                 ),
               ),
-              
-              Text(widget.imagedata!.data().toString()+widget.IsImage.toString())
             ],
           ),
         ),
@@ -155,6 +208,10 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void _updateProfile() async {
+    if(_pickedImg!=null)
+      {
+        UploadImage();
+      }
     // Construct the updated data map
     Map<String, dynamic> updatedData = {
       'MobileNo': _mobileController.text,
