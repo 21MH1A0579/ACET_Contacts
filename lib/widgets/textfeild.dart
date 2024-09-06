@@ -16,6 +16,8 @@ class InputTextFeild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      style: TextStyle(fontSize: 22,fontWeight: FontWeight.bold),
+      obscuringCharacter: '*',
       obscureText: IsObscure,
       controller: controller,
       decoration: InputDecoration(
@@ -35,6 +37,7 @@ class InputTextFeild extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(15),
         ),
+        hintStyle: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),
         hintText: label,
         prefixIcon: Icon(icon,color: Colors.orangeAccent,),
       ),

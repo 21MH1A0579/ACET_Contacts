@@ -14,7 +14,7 @@ class InfoPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           elevation: 0, // Makes the AppBar transparent
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: primarycolor),
+            icon: Icon(Icons.arrow_back, color: primarycolor,size: 40,),
             onPressed: () {
               Navigator.pushReplacement(
                 context,
@@ -84,7 +84,7 @@ class InfoPage extends StatelessWidget {
           
                       // Designed and Developed By
                       Text(
-                        "Designed and Developed by ACET Team",
+                        "Designed and Developed by ACET IQAC Team",
                         style: TextStyle(
                           color: Colors.black54,
                           fontSize: 16,
