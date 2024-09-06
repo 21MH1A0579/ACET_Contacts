@@ -59,6 +59,13 @@ class Custom_Container extends StatelessWidget {
                   width: screenSize.width / 6,
                   height: screenSize.height / 12,
                 ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Divider(
+                    height: 0.2,
+                    thickness: 0.5,
+                  ),
+                ),
                 Text(
                   title,
                   style: const TextStyle(
