@@ -22,7 +22,7 @@ class _UserImagePickerState extends State<UserImagePicker> {
   void _pickImage() async {
     final pickedImage = await ImagePicker().pickImage(
       source: ImageSource.gallery,
-      imageQuality: 75,
+      imageQuality: 25,
     );
     if (pickedImage == null) {
       return;
@@ -51,7 +51,13 @@ class _UserImagePickerState extends State<UserImagePicker> {
         TextButton.icon(
           onPressed: _pickImage,
           icon: const Icon(Icons.image, color: Colors.purple),
-          label: Text(
+          label: widget.bgimg==true?Text(
+    'Update Image',
+    style: TextStyle(
+      fontSize: 18,
+    color: Colors.purple,
+    ),
+    ):Text(
             'Add Image',
             style: TextStyle(
               color: Colors.purple,

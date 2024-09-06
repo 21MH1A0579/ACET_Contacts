@@ -60,12 +60,20 @@ class PrincipalScreen extends StatelessWidget {
                             if (provider.imgData != null)
                               ClipOval(
                                 child: CircleAvatar(
+<<<<<<< HEAD
                                   radius: isPortrait
                                       ? size.width / 5
                                       : size.width * 0.15,
                                   backgroundColor: Colors.orange.shade500,
                                   child: Image.network(
                                     fit: BoxFit.values[0],
+=======
+                                  radius: isPortrait ? size.width /3.7: size.width * 0.15,
+                                  backgroundColor: Colors.purple.shade100,
+                                  child: Image.network(
+                                    cacheHeight: 500,
+                                    cacheWidth: 500,
+>>>>>>> f32de8af3758166d51b6b15ceb700b26051227c6
                                     provider.imgData?['imgurl'] ?? '',
                                     errorBuilder:
                                         (context, error, stackTrace) =>

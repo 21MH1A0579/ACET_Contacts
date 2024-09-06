@@ -170,7 +170,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       name: user?['EmployeeName'],
                                       designation: user?['Designation'],
                                       email: user?['EmailId'],
-                                      title: "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
+                                      title: "EMPLOYEE ID:${user?['EmpId']}",
                                       phonenumber1: user?['MobileNo'],
                                       phonenumber2: '_'
                                   )

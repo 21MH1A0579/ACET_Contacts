@@ -1,14 +1,42 @@
 import 'package:aditya_contacts/widgets/custom_widgets.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileWidget extends StatefulWidget {
   final String name,phonenumber1,phonenumber2,designation,email,title;
   const ProfileWidget({super.key, required this.name, required this.designation, required this.email,  required this.title, required this.phonenumber1, required this.phonenumber2});
+
+  @override
+  State<ProfileWidget> createState() => _ProfileWidgetState();
+}
+
+class _ProfileWidgetState extends State<ProfileWidget> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getImageData();
+  }
+   bool imagefound=false;
+   late DocumentSnapshot snapshot;
+  void getImageData() async{
+
+    final id=widget.title.substring(12).trim();
+     snapshot=await FirebaseFirestore.instance.collection("imagedata").doc(id).get();
+     if(snapshot.exists)
+       {
+         setState(() {
+           imagefound=true;
+         });
+       }
+  }
   @override
   Widget build(BuildContext context) {
-    Future<void> makeUricall(String scheme,String address,) async {
+
+    
+    Future<void> makeUricall(String scheme,String address) async {
       final Uri launchUri = Uri(
         scheme: scheme,
         path: address,
@@ -26,7 +54,7 @@ class ProfileWidget extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
         title:  Text(
-          title,
+          widget.title,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -46,22 +74,28 @@ class ProfileWidget extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      ClipOval(
-                        child: CircleAvatar(
-                          radius: ispotraint?size.width/3.80:size.width/7,
-                          // backgroundColor: Colors.orange.shade500,
-                          child: Image.asset("asserts/no_image.png"),
-                        ),
+                      // ClipOval(
+                      //   child: CircleAvatar(
+                      //     radius: ispotraint?size.width/3.90:size.width/6,
+                      //     // backgroundColor: Colors.orange.shade500,
+                      //     child: imagefound?Image.network(snapshot.get("imgurl")):Image.asset("asserts/no_image.png"),
+                      //   ),
+                      // ),
+                      CircleAvatar(
+                        radius: ispotraint?size.width/3.90:size.width/6,
+                        backgroundColor: Colors.grey,
+                        foregroundImage:imagefound?NetworkImage(snapshot.get("imgurl"),scale: 10):AssetImage("asserts/no_image.png"),
+                        // Image.network(snapshot.get("imgurl"),fit:BoxFit.cover) as ImageProvider:Image.asset("asserts/no_image.png") as ImageProvider,
                       ),
                       const SizedBox(height: 10,),
                       Text(
-                        name,
+                        widget.name,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
 
                       ),
                       const SizedBox(height: 5,),
                        Text(
-                        designation,
+                        widget.designation,
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                       ),
                        const Text(
@@ -85,25 +119,26 @@ class ProfileWidget extends StatelessWidget {
             ),
             const Divider(),
             ListTile(
-              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',phonenumber1)),
-              title: Text(phonenumber1,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
-              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',phonenumber1)),
+              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',widget.phonenumber1)),
+              title: Text(widget.phonenumber1,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
+              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',widget.phonenumber1)),
             ),
-            phonenumber2.length>5?ListTile(
-              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',phonenumber2)),
-              title: Text(phonenumber2,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
-              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',phonenumber2)),
+            widget.phonenumber2.length>5?ListTile(
+              leading: Custom_IconButton(icon: Icons.message_outlined,function: ()=>makeUricall('sms',widget.phonenumber2)),
+              title: Text(widget.phonenumber2,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
+              trailing: Custom_IconButton(icon: Icons.phone,function: ()=>makeUricall('tel',widget.phonenumber2)),
             ):const SizedBox(height: 0.5,),
             const Divider(),
             ListTile(
-              title:email.length<=5 ?const Text("No Email Found",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.red),): Text(email,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
-              trailing: Custom_IconButton(icon: Icons.email_outlined, function: ()=>makeUricall('mailto',email.trim())),
+              title:widget.email.length<=5 ?const Text("No Email Found",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.red),): Text(widget.email,style: const TextStyle(fontSize: 20,fontWeight: FontWeight.normal),),
+              trailing: Custom_IconButton(icon: Icons.email_outlined, function: ()=>makeUricall('mailto',widget.email.trim())),
             )
           ],
         ),
       ),
     );
   }
+
 }
 
 
