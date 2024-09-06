@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:aditya_contacts/screens/Admin.dart';
+import 'package:aditya_contacts/widgets/constants.dart';
 import 'package:aditya_contacts/widgets/user_image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -20,6 +21,7 @@ class ProfileUpdateScreen extends StatefulWidget {
 }
 
 class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
+  bool IsLoading=false;
   // Controllers for editable fields
   final TextEditingController _mobileController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -38,6 +40,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
   Future<void> UploadImage() async {
     try {
+      setState(() {
+        IsLoading=true;
+      });
       // Initialize Firebase if not already initialized (depends on how you've structured your app)
       await Firebase.initializeApp(); // Ensure Firebase is initialized
       
@@ -61,10 +66,16 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
           }
           catch(e){
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating Image: $e')));
+            setState(() {
+              IsLoading=false;
+            });
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating Image: $e'),backgroundColor: Colors.red,));
           }
 
         }else{
+        setState(() {
+          IsLoading=true;
+        });
         await storageRef.putFile(_pickedImg!);
         final imageUrl = await storageRef.getDownloadURL();
         Map<String,dynamic>newinsertingimagedata;
@@ -77,17 +88,28 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
 
       }
     } catch (e) {
-      print('Failed to upload image: $e');
+      setState(() {
+        IsLoading=false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error Occurred:${e}'),backgroundColor: Colors.red,));
     }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Update Profile'),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+      appBar:  AppBar(
+      foregroundColor: Colors.white,
+      centerTitle: true,
+      title: const Text(
+        "UPDATE PROFILE",
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,
+        ),
       ),
+      backgroundColor: primarycolor,
+    ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -162,13 +184,13 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 child: ElevatedButton.icon(
                   onPressed: _updateProfile,
                   icon: const Icon(Icons.save, color: Colors.white),
-                  label: const Text('Save Changes', style: TextStyle(color: Colors.white)),
+                  label: IsLoading?Center(child: CircularProgressIndicator(color: Colors.white,),):const Text('Save Changes', style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    backgroundColor: Colors.deepPurple,
+                    backgroundColor: primarycolor,
                   ),
                 ),
               ),
@@ -208,6 +230,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
   }
 
   void _updateProfile() async {
+    setState(() {
+      IsLoading=true;
+    });
     if(_pickedImg!=null)
       {
         UploadImage();
@@ -225,13 +250,18 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           .collection(widget.department!)
           .doc('${widget.data?['EmpId']} ')
           .update(updatedData);
-
+      setState(() {
+        IsLoading=false;
+      });
       // Show a success message or navigate back
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!')));
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>AdminLoginPage()));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Profile updated successfully!'),backgroundColor: Colors.green,));
+      Navigator.pop(context);
     } catch (e) {
       // Handle errors
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating profile: $e')));
+      setState(() {
+        IsLoading=false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating profile: $e'),backgroundColor: Colors.red,));
     }
   }
 

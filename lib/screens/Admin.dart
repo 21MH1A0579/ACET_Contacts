@@ -18,6 +18,7 @@ class AdminLoginPage extends StatefulWidget {
 class _AdminLoginPageState extends State<AdminLoginPage> {
 
 
+
   bool isLoginPageLoading = false;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -32,7 +33,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
       if (username.isEmpty || password.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter both username and password')),
+          SnackBar(content: Text('Please enter both username and password'),backgroundColor: Colors.red,),
 
         );
         setState(() {
@@ -48,7 +49,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         if(password != '${username}@acet')
           {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Invalid Password:${password}')),
+              SnackBar(content: Text('Invalid Password:${password}'),backgroundColor: Colors.red,),
             );
             setState(() {
               isLoginPageLoading=false;
@@ -102,7 +103,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             isLoginPageLoading=false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid Credentials')),
+            SnackBar(content: Text('Invalid Credentials'),backgroundColor: Colors.red,),
           );
         }
       }else if(RegExp(r'^[a-zA-Z]+$').hasMatch(username) && RegExp(r'^[0-9]+$').hasMatch(username))
@@ -111,7 +112,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           isLoginPageLoading=false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid UserName')),
+          SnackBar(content: Text('Invalid UserName'),backgroundColor: Colors.red,),
         );
       }
       else {
@@ -142,7 +143,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             isLoginPageLoading=false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid Username or Password')),
+            SnackBar(content: Text('Invalid Username or Password'),backgroundColor: Colors.red,),
           );
         }
       }
@@ -157,6 +158,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final double height=MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -169,8 +171,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.orange.shade900,
-                  Colors.orange.shade800,
+                  primarycolor,
+                  Colors.orange.shade500,
+                  Colors.orange.shade100,
                 ],
               ),
             ),
@@ -183,20 +186,21 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 200),
+            padding: EdgeInsets.only(top: height/3.588),
             child: Container(
+              height: double.maxFinite,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(55),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(55),topRight: Radius.circular(55),),
               ),
               child: Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 15),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage("asserts/adityalogo.jpg"), // Corrected path
-                      maxRadius: 75,
+                      backgroundImage: const AssetImage("asserts/adityalogo.jpg"), // Corrected path
+                      maxRadius: height/8.97,
                     ),
                   ),
                   const SizedBox(height: 45),
@@ -212,9 +216,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15),
                     child: InputTextFeild(
-                      icon: Icons.password,
+                      icon: Icons.lock,
                       label: "Enter Your Password",
                       controller: passwordController,
+                      IsObscure: true,
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -226,14 +231,15 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(35),
-                          gradient: LinearGradient(
-                            begin: Alignment.topRight,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.orange.shade600,
-                              Colors.orange.shade900,
-                            ],
-                          ),
+                          // gradient: LinearGradient(
+                          //   begin: Alignment.topRight,
+                          //   end: Alignment.bottomCenter,
+                          //   colors: [
+                          //     Colors.orange.shade600,
+                          //     Colors.orange.shade900,
+                          //   ],
+                          // ),
+                          color: primarycolor
                         ),
                         width: double.infinity,
                         height: 55,
@@ -242,7 +248,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                               ? const CircularProgressIndicator(color: Colors.white)
                               : const Text(
                             "LOGIN",
-                            style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.white, fontSize: 25,fontWeight: FontWeight.w500),
                           ),
                         ),
                       ),
