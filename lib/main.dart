@@ -180,20 +180,25 @@ class HomeScreen extends StatelessWidget {
                       : MainAxisAlignment.spaceAround,
                   children: [
                     Custom_Container(
-                        imgaddress: "asserts/person1.svg",
-                        title: "Principal",
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const PrincipalScreen()))),
+                      imgaddress: "asserts/person1.svg",
+                      title: "Principal",
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const PrincipalScreen(),
+                        ),
+                      ),
+                    ),
                     Custom_Container(
-                        imgaddress: "asserts/person2.svg",
-                        title: "Deans",
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const DeansScreen()))),
+                      imgaddress: "asserts/person2.svg",
+                      title: "Deans",
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const DeansScreen(),
+                        ),
+                      ),
+                    ),
                     Custom_Container(
                       imgaddress: "asserts/person4.svg",
                       title: "HOD's",
@@ -305,7 +310,8 @@ class HomeScreen extends StatelessWidget {
                               Image(
                                   height: screenSize.height / 12,
                                   width: screenSize.width / 6,
-                                  image: AssetImage("asserts/adityalogo.jpg")),
+                                  image: const AssetImage(
+                                      "asserts/adityalogo.jpg")),
                               const Text(
                                 "Info",
                                 style: TextStyle(fontSize: 16),
