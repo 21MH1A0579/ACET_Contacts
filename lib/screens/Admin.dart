@@ -37,6 +37,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
   @override
   void didChangeMetrics() {
     super.didChangeMetrics();
+    // ignore: deprecated_member_use
     final bottom = WidgetsBinding.instance.window.viewInsets.bottom;
     setState(() {
       bottomPadding = bottom;
@@ -54,7 +55,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
     if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please enter both username and password'),
+          content: const Text('Please enter both username and password'),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(
@@ -87,8 +88,10 @@ class _AdminLoginPageState extends State<AdminLoginPage>
       }
       bool found = false;
       DocumentSnapshot? snapshot;
+      // ignore: non_constant_identifier_names
       DocumentSnapshot? Imagedata;
       bool isimage = true;
+      // ignore: non_constant_identifier_names
       String? UserDepartment;
       for (String department in departments.values) {
         snapshot = await FirebaseFirestore.instance
@@ -112,6 +115,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
         });
 
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (context) => ProfileUpdateScreen(
@@ -129,6 +133,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
         setState(() {
           isLoginPageLoading = false;
         });
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Invalid Credentials'),
@@ -162,6 +167,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
           isLoginPageLoading = false;
         });
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
             builder: (context) => const AdminMainPage(),
@@ -173,6 +179,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
         setState(() {
           isLoginPageLoading = false;
         });
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Invalid Username or Password'),
@@ -229,7 +236,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
                             ],
                           ),
                           child: Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Column(
                               children: [
                                 const Image(
@@ -243,7 +250,8 @@ class _AdminLoginPageState extends State<AdminLoginPage>
                                 ),
                                 const SizedBox(height: 45),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                   child: InputTextFeild(
                                     icon: Icons.email,
                                     label: "Enter Your Employee ID",
@@ -252,7 +260,8 @@ class _AdminLoginPageState extends State<AdminLoginPage>
                                 ),
                                 const SizedBox(height: 10),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                   child: InputTextFeild(
                                     icon: Icons.lock,
                                     label: "Enter Your Password",
