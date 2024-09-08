@@ -9,7 +9,7 @@ import '../widgets/textfeild.dart';
 
 
 class AdminLoginPage extends StatefulWidget {
-  AdminLoginPage({super.key});
+  const AdminLoginPage({super.key});
 
   @override
   State<AdminLoginPage> createState() => _AdminLoginPageState();
@@ -33,7 +33,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
       if (username.isEmpty || password.isEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Please enter both username and password'),backgroundColor: Colors.red,),
+          const SnackBar(content: Text('Please enter both username and password'),backgroundColor: Colors.red,),
 
         );
         setState(() {
@@ -46,10 +46,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
 
       if (isUsernameNumeric) {
         // Handle department-specific collections
-        if(password != '${username}@acet')
+        if(password != '$username@acet')
           {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Invalid Password:${password}'),backgroundColor: Colors.red,),
+              SnackBar(content: Text('Invalid Password:$password'),backgroundColor: Colors.red,),
             );
             setState(() {
               isLoginPageLoading=false;
@@ -62,7 +62,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
         bool isimage=true;
         String? UserDepartment;
         for (String department in departments.values) {
-          snapshot = await FirebaseFirestore.instance.collection(department).doc('${username} ').get();
+          snapshot = await FirebaseFirestore.instance.collection(department).doc('$username ').get();
           print(snapshot.data());
           if(snapshot.data() != null)
             {
@@ -103,7 +103,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             isLoginPageLoading=false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid Credentials'),backgroundColor: Colors.red,),
+            const SnackBar(content: Text('Invalid Credentials'),backgroundColor: Colors.red,),
           );
         }
       }else if(RegExp(r'^[a-zA-Z]+$').hasMatch(username) && RegExp(r'^[0-9]+$').hasMatch(username))
@@ -112,7 +112,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           isLoginPageLoading=false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Invalid UserName'),backgroundColor: Colors.red,),
+          const SnackBar(content: Text('Invalid UserName'),backgroundColor: Colors.red,),
         );
       }
       else {
@@ -133,7 +133,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AdminMainPage(),
+              builder: (context) => const AdminMainPage(),
             ),
           );
           usernameController.clear();
@@ -143,7 +143,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             isLoginPageLoading=false;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Invalid Username or Password'),backgroundColor: Colors.red,),
+            const SnackBar(content: Text('Invalid Username or Password'),backgroundColor: Colors.red,),
           );
         }
       }
@@ -190,7 +190,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             child: Container(
               height: double.maxFinite,
               width: double.infinity,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(55),topRight: Radius.circular(55),),
               ),

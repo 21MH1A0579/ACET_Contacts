@@ -9,7 +9,7 @@ class InfoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255,255,255,255),
+        backgroundColor: const Color.fromARGB(255,255,255,255),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0, // Makes the AppBar transparent
@@ -61,7 +61,7 @@ class InfoPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.green[100], // Slightly lighter green for a professional look
                     borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 10,
@@ -73,7 +73,7 @@ class InfoPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Copyright Information
-                      Text(
+                      const Text(
                         "© 2024 ACET CONTACTS\n All rights reserved.",
                         style: TextStyle(
                           color: Colors.black87,
@@ -83,7 +83,7 @@ class InfoPage extends StatelessWidget {
                       const SizedBox(height: 16),
           
                       // Designed and Developed By
-                      Text(
+                      const Text(
                         "Designed and Developed by ACET IQAC Team",
                         style: TextStyle(
                           color: Colors.black54,
@@ -108,7 +108,7 @@ class InfoPage extends StatelessWidget {
                         children: [
                           Icon(Icons.phone, color: primarycolor, size: 18),
                           const SizedBox(width: 8),
-                          Expanded(
+                          const Expanded(
                             child: Text(
                               "+91 9573282201",
                               style: TextStyle(
@@ -127,7 +127,7 @@ class InfoPage extends StatelessWidget {
                         children: [
                           Icon(Icons.email, color: primarycolor, size: 18),
                           const SizedBox(width: 8),
-                          Expanded(
+                          const Expanded(
                             child: Text(
                               "chalumuribrahmendra@gmail.com",
                               style: TextStyle(
