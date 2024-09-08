@@ -1,6 +1,8 @@
 import 'package:aditya_contacts/widgets/custom_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
 
@@ -51,6 +53,39 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         await launch(launchUri.toString());
       } else {
         throw 'Could not launch $address';
+      }
+    }
+
+    Future<void> addContact() async {
+      // Request permission to access contacts
+      PermissionStatus permission = await Permission.contacts.request();
+
+      if (permission.isGranted) {
+        // Create a new contact with the provided information
+        Contact newContact = Contact(
+          givenName: widget.name,
+          phones: [Item(label: "mobile", value: widget.phonenumber1)],
+          emails: [Item(label: "work", value: widget.email)],
+        );
+
+        try {
+          await ContactsService.addContact(newContact);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Contact Added Successfully!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to add contact: $e')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Permission denied')),
+        );
       }
     }
 
@@ -216,27 +251,43 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     )
                                   ],
                                 ),
-                                Row(
-                                  children: [
-                                    const VerticalDivider(
-                                      width: 0.5,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        makeUricall("tel", widget.phonenumber1);
-                                      },
-                                      icon: const Icon(Icons.phone),
-                                    ),
-                                    const VerticalDivider(
-                                      width: 0.5,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        makeUricall("sms", widget.phonenumber1);
-                                      },
-                                      icon: const Icon(Icons.chat_rounded),
-                                    ),
-                                  ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    children: [
+                                      const VerticalDivider(
+                                        width: 0.5,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          makeUricall(
+                                              "tel", widget.phonenumber1);
+                                        },
+                                        icon: const Icon(Icons.phone),
+                                      ),
+                                      const VerticalDivider(
+                                        width: 0.5,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          makeUricall(
+                                              "sms", widget.phonenumber1);
+                                        },
+                                        icon: const Icon(Icons.chat_rounded),
+                                      ),
+                                      const VerticalDivider(
+                                        width: 0.5,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          addContact();
+                                        },
+                                        icon: const Icon(
+                                            Icons.person_add_alt_1_rounded),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
@@ -265,21 +316,25 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   widget.email,
                                   style: const TextStyle(fontSize: 16),
                                 ),
-                                Row(
-                                  children: [
-                                    const VerticalDivider(
-                                      width: 0.5,
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        makeUricall(
-                                          'mailto',
-                                          widget.email.trim(),
-                                        );
-                                      },
-                                      icon: const Icon(Icons.outgoing_mail),
-                                    ),
-                                  ],
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Row(
+                                    children: [
+                                      const VerticalDivider(
+                                        width: 0.5,
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          makeUricall(
+                                            'mailto',
+                                            widget.email.trim(),
+                                          );
+                                        },
+                                        icon: const Icon(Icons.outgoing_mail),
+                                      ),
+                                    ],
+                                  ),
                                 )
                               ],
                             ),
@@ -297,139 +352,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
     );
   }
 }
-
-// return Scaffold(
-//   appBar: AppBar(
-//     foregroundColor: Colors.white,
-//     centerTitle: true,
-//     title: Text(
-//       widget.title,
-//       style: const TextStyle(
-//         color: Colors.white,
-//         fontWeight: FontWeight.bold,
-//         fontStyle: FontStyle.italic,
-//       ),
-//     ),
-//     backgroundColor: primarycolor,
-//   ),
-//   body: SingleChildScrollView(
-//     child: Column(
-//       children: [
-//         Padding(
-//           padding: const EdgeInsets.only(top: 8.0),
-//           child: Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Column(
-//                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                 children: [
-//                   // ClipOval(
-//                   //   child: CircleAvatar(
-//                   //     radius: ispotraint?size.width/3.90:size.width/6,
-//                   //     // backgroundColor: Colors.orange.shade500,
-//                   //     child: imagefound?Image.network(snapshot.get("imgurl")):Image.asset("asserts/no_image.png"),
-//                   //   ),
-//                   // ),
-//                   CircleAvatar(
-//                     radius: ispotraint ? size.width / 3.90 : size.width / 6,
-//                     backgroundColor: Colors.grey,
-//                     foregroundImage: imagefound
-//                         ? NetworkImage(snapshot.get("imgurl"), scale: 10)
-//                         : const AssetImage("asserts/no_image.png"),
-//                     // Image.network(snapshot.get("imgurl"),fit:BoxFit.cover) as ImageProvider:Image.asset("asserts/no_image.png") as ImageProvider,
-//                   ),
-//                   const SizedBox(
-//                     height: 10,
-//                   ),
-//                   Text(
-//                     widget.name,
-//                     style: const TextStyle(
-//                         fontWeight: FontWeight.bold, fontSize: 17),
-//                   ),
-//                   const SizedBox(
-//                     height: 5,
-//                   ),
-//                   Text(
-//                     widget.designation,
-//                     style: const TextStyle(
-//                         fontWeight: FontWeight.bold, fontSize: 18),
-//                   ),
-//                   const Text(
-//                     "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
-//                     style: TextStyle(
-//                         fontWeight: FontWeight.bold, fontSize: 14),
-//                   ),
-//                 ],
-//               )
-//             ],
-//           ),
-//         ),
-//         const Divider(),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Custom_IconButton(icon: Icons.star_border, function: () {}),
-//             Custom_IconButton(icon: Icons.edit, function: () => {}),
-//             Custom_IconButton(
-//                 icon: Icons.person_add_alt, function: () async {}),
-//           ],
-//         ),
-//         const Divider(),
-//         ListTile(
-//           leading: Custom_IconButton(
-//               icon: Icons.message_outlined,
-//               function: () => makeUricall('sms', widget.phonenumber1)),
-//           title: Text(
-//             widget.phonenumber1,
-//             style: const TextStyle(
-//                 fontSize: 20, fontWeight: FontWeight.normal),
-//           ),
-//           trailing: Custom_IconButton(
-//               icon: Icons.phone,
-//               function: () => makeUricall('tel', widget.phonenumber1)),
-//         ),
-//         widget.phonenumber2.length > 5
-//             ? ListTile(
-//                 leading: Custom_IconButton(
-//                     icon: Icons.message_outlined,
-//                     function: () =>
-//                         makeUricall('sms', widget.phonenumber2)),
-//                 title: Text(
-//                   widget.phonenumber2,
-//                   style: const TextStyle(
-//                       fontSize: 20, fontWeight: FontWeight.normal),
-//                 ),
-//                 trailing: Custom_IconButton(
-//                     icon: Icons.phone,
-//                     function: () =>
-//                         makeUricall('tel', widget.phonenumber2)),
-//               )
-//             : const SizedBox(
-//                 height: 0.5,
-//               ),
-//         const Divider(),
-//         ListTile(
-//           title: widget.email.length <= 5
-//               ? const Text(
-//                   "No Email Found",
-//                   style: TextStyle(
-//                       fontSize: 20,
-//                       fontWeight: FontWeight.bold,
-//                       color: Colors.red),
-//                 )
-//               : Text(
-//                   widget.email,
-//                   style: const TextStyle(
-//                       fontSize: 20, fontWeight: FontWeight.normal),
-//                 ),
-//           trailing: Custom_IconButton(
-//               icon: Icons.email_outlined,
-//               function: () => makeUricall('mailto', widget.email.trim())),
-//         )
-//       ],
-//     ),
-//   ),
-// );
 
 class Committee_ProfileWidget extends StatefulWidget {
   final String name1, name2, phonenumber1, phonenumber2, committe_name;
