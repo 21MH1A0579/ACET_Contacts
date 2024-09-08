@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:aditya_contacts/screens/AdminMain.dart';
 import 'package:aditya_contacts/screens/userprofile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
