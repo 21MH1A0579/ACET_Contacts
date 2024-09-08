@@ -9,7 +9,7 @@ class AdminMainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    File? _pickedImg;
+    File? pickedImg;
 
     Future<void> insertPrincipalPic() async {
       try {
@@ -20,15 +20,10 @@ class AdminMainPage extends StatelessWidget {
         FirebaseStorage storage = FirebaseStorage.instanceFor(bucket: 'gs://aditya-ff271.appspot.com');
         final storageRef = storage.ref().child("principal").child("principal.jpg");
 
-        if (_pickedImg == null) {
-          print("No image selected.");
-          return;
-        }
-
+        print("No image selected.");
+        return;
+      
         // Upload the image file
-        await storageRef.putFile(_pickedImg!);
-        final imageUrl = await storageRef.getDownloadURL();
-        print('Image uploaded successfully. URL: $imageUrl');
       } catch (e) {
         print('Failed to upload image: $e');
       }
@@ -36,14 +31,14 @@ class AdminMainPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("ADMIN MAIN PAGE"),
+        title: const Text("ADMIN MAIN PAGE"),
       ),
       body: Row(
         children: [
           Center(
             child: UserImagePicker(
               onPickImage: (pickedImg) {
-                _pickedImg = pickedImg;
+                pickedImg = pickedImg;
                 print(pickedImg.path);
               }, bgimg: false,
             ),
@@ -52,7 +47,7 @@ class AdminMainPage extends StatelessWidget {
             onPressed: () async {
               await insertPrincipalPic();
             },
-            icon: Icon(Icons.save, size: 55),
+            icon: const Icon(Icons.save, size: 55),
           ),
         ],
       ),

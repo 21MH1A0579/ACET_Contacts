@@ -44,10 +44,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'ACET Contacts',
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }
@@ -154,7 +157,7 @@ class HomeScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Color.fromARGB(206, 255, 146, 37),
+        backgroundColor: const Color.fromARGB(206, 255, 146, 37),
         actions: [
           IconButton(
             onPressed: () {
@@ -228,14 +231,14 @@ class HomeScreen extends StatelessWidget {
                         onTap: () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Iqac_Screen()))),
+                                builder: (context) => const Iqac_Screen()))),
                     Custom_Container(
                       imgaddress: "asserts/committee.svg",
                       title: "Committee",
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Committee_Screen())),
+                              builder: (context) => const Committee_Screen())),
                     ),
                   ],
                 ),
@@ -264,7 +267,7 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: isLargeScreen
                       ? MainAxisAlignment.spaceEvenly
                       : MainAxisAlignment.spaceAround,
-                  children: [],
+                  children: const [],
                 ),
                 Row(
                   mainAxisAlignment: isLargeScreen
@@ -327,7 +330,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AdminLoginPage())),
+                              builder: (context) => const AdminLoginPage())),
                     ),
                   ],
                 ),
