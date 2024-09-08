@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class InputTextFeild extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   final IconData icon;
   final String label;
+  // ignore: non_constant_identifier_names
   final bool IsObscure;
   InputTextFeild({
     super.key,
     required this.icon,
     required this.label,
     required this.controller,
+    // ignore: non_constant_identifier_names
     this.IsObscure = false,
   });
   @override
