@@ -218,7 +218,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                            "Aditya College of Engineering and Technology"),
+                            "Aditya College of Engineering and Technology",style: TextStyle(fontWeight:FontWeight.bold),),
                         const Divider(
                           color: Colors.black,
                           thickness: 0.5,
