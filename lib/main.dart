@@ -259,7 +259,7 @@ class HomeScreen extends StatelessWidget {
                         imgaddress: "asserts/emergency.svg",
                         title: "Emergency",
                         onTap: () async {
-                          insert_principal_data();
+                          // insert_principal_data();
                         }),
                   ],
                 ),
