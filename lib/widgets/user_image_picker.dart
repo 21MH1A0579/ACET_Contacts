@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 
 class UserImagePicker extends StatefulWidget {
@@ -45,19 +44,19 @@ class _UserImagePickerState extends State<UserImagePicker> {
               : (widget.bgimg == true
               ? widget.imgdata != null
               ? NetworkImage(widget.imgdata!['imgurl'])
-              : AssetImage("asserts/no_image.png") as ImageProvider
-              : AssetImage("asserts/no_image.png")),
+              : const AssetImage("asserts/no_image.png") as ImageProvider
+              : const AssetImage("asserts/no_image.png")),
         ),
         TextButton.icon(
           onPressed: _pickImage,
           icon: const Icon(Icons.image, color: Colors.purple),
-          label: widget.bgimg==true?Text(
+          label: widget.bgimg==true?const Text(
     'Update Image',
     style: TextStyle(
       fontSize: 18,
     color: Colors.purple,
     ),
-    ):Text(
+    ):const Text(
             'Add Image',
             style: TextStyle(
               color: Colors.purple,

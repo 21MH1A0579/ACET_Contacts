@@ -8,7 +8,7 @@ import '../widgets/profile_widget.dart';
  // Adjust the path as needed
 
 class DeansScreen extends StatelessWidget {
-  const DeansScreen({Key? key}) : super(key: key);
+  const DeansScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

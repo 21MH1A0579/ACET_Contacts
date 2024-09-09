@@ -1,51 +1,75 @@
-
 import 'package:aditya_contacts/widgets/profile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'constants.dart';
+
 class Custom_IconButton extends StatelessWidget {
- final IconData icon;
+  final IconData icon;
   final VoidCallback function;
-   const Custom_IconButton( {super.key,required this.icon,required this.function});
+  const Custom_IconButton(
+      {super.key, required this.icon, required this.function});
 
   @override
   Widget build(BuildContext context) {
-    return  IconButton(onPressed: function, icon: Icon(icon,color: primarycolor,size: 30,),splashRadius: 50,);
+    return IconButton(
+      onPressed: function,
+      icon: Icon(
+        icon,
+        color: primarycolor,
+        size: 30,
+      ),
+      splashRadius: 50,
+    );
   }
 }
+
 class Custom_ListItem extends StatelessWidget {
- final String name;
- final String designation;
- final VoidCallback ontap;
-  const Custom_ListItem({super.key,required this.name,required this.designation,required this.ontap});
+  final String name;
+  final String designation;
+  final VoidCallback ontap;
+  const Custom_ListItem(
+      {super.key,
+      required this.name,
+      required this.designation,
+      required this.ontap});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
       child: ListTile(
-       onTap: ontap,
-       selectedColor: primarycolor,
-        tileColor:Colors.white,
-       contentPadding:  const EdgeInsets.only(left: 20,right: 20,top: 2,bottom: 2),
-       shape: RoundedRectangleBorder(
-         side: const BorderSide(color: Colors.black12,width: 0.85),
-           borderRadius: BorderRadius.circular(10)),
-       title: Text(name,style:const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-       subtitle: Text(designation,style: const TextStyle(fontSize: 19),),
-       trailing: Icon(Icons.arrow_forward_ios_sharp,size: 30,color: primarycolor,),
+        onTap: ontap,
+        selectedColor: primarycolor,
+        tileColor: Colors.white,
+        contentPadding:
+            const EdgeInsets.only(left: 20, right: 20, top: 2, bottom: 2),
+        shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.black12, width: 0.85),
+            borderRadius: BorderRadius.circular(10)),
+        title: Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        subtitle: Text(
+          designation,
+          style: const TextStyle(fontSize: 19),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_sharp,
+          size: 30,
+          color: primarycolor,
+        ),
       ),
     );
   }
 }
 
-
-
 class Custom_DepartMentItem extends StatelessWidget {
   final String name;
   final VoidCallback ontap;
-  const Custom_DepartMentItem({super.key,required this.name,required this.ontap});
+  const Custom_DepartMentItem(
+      {super.key, required this.name, required this.ontap});
 
   @override
   Widget build(BuildContext context) {
@@ -54,13 +78,21 @@ class Custom_DepartMentItem extends StatelessWidget {
       child: ListTile(
         onTap: ontap,
         selectedColor: primarycolor,
-        tileColor:Colors.white,
-        contentPadding:  const EdgeInsets.only(left: 20,right: 5,top: 2,bottom: 2),
+        tileColor: Colors.white,
+        contentPadding:
+            const EdgeInsets.only(left: 20, right: 5, top: 2, bottom: 2),
         shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black12,width: 2),
+            side: const BorderSide(color: Colors.black12, width: 2),
             borderRadius: BorderRadius.circular(10)),
-        title: Text(name,style:const TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
-        trailing: Icon(Icons.arrow_forward_ios_sharp,size: 30,color: primarycolor,),
+        title: Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_sharp,
+          size: 30,
+          color: primarycolor,
+        ),
       ),
     );
   }
@@ -169,12 +201,12 @@ class Departments_Screen extends StatelessWidget {
   }
 }
 
-
 class Custom_ListTile extends StatelessWidget {
   final String title;
   final String collectionName;
 
-  const Custom_ListTile({super.key, required this.title, required this.collectionName});
+  const Custom_ListTile(
+      {super.key, required this.title, required this.collectionName});
 
   @override
   Widget build(BuildContext context) {
@@ -193,13 +225,22 @@ class Custom_ListTile extends StatelessWidget {
         backgroundColor: primarycolor,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection(collectionName).orderBy('EmployeeName').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection(collectionName)
+            .orderBy('EmployeeName')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
+            return Center(
+                child: CircularProgressIndicator(
+              color: primarycolor,
+            ));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
+            return Center(
+                child: CircularProgressIndicator(
+              color: primarycolor,
+            ));
           }
           var persons = snapshot.data!.docs.map((doc) {
             return {
@@ -225,7 +266,7 @@ class Custom_ListTile extends StatelessWidget {
                       name: persons[index]["EmployeeName"]!,
                       designation: persons[index]["Designation"]!,
                       email: persons[index]["EmailId"]!,
-                      title: "EMPLOYEE ID:${persons[index]["EmpId"]!}",
+                      title: persons[index]["EmpId"]!,
                       phonenumber1: persons[index]["MobileNo"]!,
                       phonenumber2: "",
                     ),
@@ -240,14 +281,15 @@ class Custom_ListTile extends StatelessWidget {
   }
 }
 
-
-
-
 class Custom_ListItemForEmployee extends StatelessWidget {
   final String name;
   final String empid;
   final VoidCallback ontap;
-  const Custom_ListItemForEmployee({super.key,required this.name,required this.ontap, required this.empid});
+  const Custom_ListItemForEmployee(
+      {super.key,
+      required this.name,
+      required this.ontap,
+      required this.empid});
 
   @override
   Widget build(BuildContext context) {
@@ -256,17 +298,146 @@ class Custom_ListItemForEmployee extends StatelessWidget {
       child: ListTile(
         onTap: ontap,
         selectedColor: primarycolor,
-        tileColor:Colors.white,
-        contentPadding:  const EdgeInsets.only(left: 20,right: 20,top: 2,bottom: 2),
+        tileColor: Colors.white,
+        contentPadding:
+            const EdgeInsets.only(left: 20, right: 20, top: 2, bottom: 2),
         shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black12,width: 0.85),
+            side: const BorderSide(color: Colors.black12, width: 0.85),
             borderRadius: BorderRadius.circular(10)),
-        title: Text(name,style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
-        subtitle: Text("EMPLOYEE ID:$empid",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-        trailing: Icon(Icons.arrow_forward_ios_sharp,size: 30,color: primarycolor,),
+        title: Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        subtitle: Text(
+          "EMPLOYEE ID:$empid",
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_sharp,
+          size: 30,
+          color: primarycolor,
+        ),
       ),
     );
   }
 }
 
+class FacultyProfile extends StatelessWidget {
+  final String name;
+  final String designation;
+  final String email;
+  final String phonenumber1;
+  final String imageurl;
+  const FacultyProfile(
+      {super.key,
+      required this.name,
+      required this.designation,
+      required this.email,
+      required this.phonenumber1,
+      required this.imageurl});
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: CustomScrollView(slivers: [
+        SliverAppBar(
+          expandedHeight: MediaQuery.of(context).size.height * 0.6,
+          elevation: 0,
+          snap: true,
+          floating: true,
+          stretch: true,
+          backgroundColor: Colors.grey.shade50,
+          flexibleSpace: FlexibleSpaceBar(
+              stretchModes: const [
+                StretchMode.zoomBackground,
+              ],
+              background: Image.asset(
+                'images/Team/SUDHIR.png',
+                fit: BoxFit.cover,
+              )),
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(30),
+              child: Transform.translate(
+                offset: const Offset(0, 1),
+                child: Container(
+                  height: 30,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30),
+                      topRight: Radius.circular(30),
+                    ),
+                  ),
+                  child: Center(
+                      child: Container(
+                    width: 50,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  )),
+                ),
+              )),
+        ),
+        SliverList(
+            delegate: SliverChildListDelegate([
+          Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              color: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Sudhir',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 40,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                      const Text(
+                        'Program Manager IT',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w100,
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        // height: 5,
+                        thickness: 0.1,
+                      ),
+                      Text(
+                        'Bhargav',
+                        style: TextStyle(
+                          color: Colors.orange.shade400,
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    "Take a break from jeans with the parker long straight pant. These lightweight, pleat front pants feature a flattering high waist and loose, straight legs.",
+                    style: TextStyle(
+                      height: 1.5,
+                      color: Colors.grey.shade800,
+                      fontSize: 15,
+                    ),
+                  ),
+                ],
+              ))
+        ])),
+      ]),
+    );
+  }
+}
