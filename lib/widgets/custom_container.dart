@@ -1,42 +1,48 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
 class Custom_Container extends StatelessWidget {
   final String imgaddress;
   final String title;
   final VoidCallback onTap;
 
-  const Custom_Container({super.key, required this.imgaddress, required this.title, required this.onTap});
+  const Custom_Container(
+      {super.key,
+      required this.imgaddress,
+      required this.title,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
-    final isPortrait = MediaQuery.of(context).orientation == Orientation.portrait;
+    final isPortrait =
+        MediaQuery.of(context).orientation == Orientation.portrait;
     return GestureDetector(
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          height: isPortrait?screenSize.height/5.03:screenSize.width/5.03,
-          width: isPortrait?screenSize.width/2.30:screenSize.height/2.30,
+          height: isPortrait ? screenSize.height / 6 : screenSize.width / 8.5,
+          width: isPortrait ? screenSize.width / 3.5 : screenSize.height / 2.3,
           decoration: BoxDecoration(
-            boxShadow:const  [
-               BoxShadow(
+            boxShadow: const [
+              BoxShadow(
                 color: Colors.black12,
                 offset: Offset(
-                  5.0,
-                  5.0,
+                  0.0,
+                  6.0,
                 ),
-                blurRadius: 10.0,
+                blurRadius: 6.0,
                 spreadRadius: 2.0,
               ), //BoxShadow
-               BoxShadow(
+              BoxShadow(
                 color: Colors.white,
                 offset: Offset(0.0, 0.0),
                 blurRadius: 0.0,
                 spreadRadius: 0.0,
               ), //BoxShadow
             ],
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(6),
           ),
           child: SizedBox(
             height: 50,
@@ -46,13 +52,25 @@ class Custom_Container extends StatelessWidget {
               children: [
                 SvgPicture.asset(
                   imgaddress,
-                  colorFilter: ColorFilter.mode(Colors.orange.shade800, BlendMode.srcIn,),
-                  width: screenSize.width/3.806,
-                  height: screenSize.height/8.3,
+                  colorFilter: const ColorFilter.mode(
+                    Color.fromARGB(255, 236, 115, 10),
+                    BlendMode.srcIn,
+                  ),
+                  width: screenSize.width / 6,
+                  height: screenSize.height / 12,
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Divider(
+                    height: 0.2,
+                    thickness: 0.5,
+                  ),
                 ),
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22, fontStyle: FontStyle.italic),
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
                 )
               ],
             ),
