@@ -441,3 +441,4 @@ class FacultyProfile extends StatelessWidget {
     );
   }
 }
+

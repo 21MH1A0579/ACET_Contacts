@@ -1,7 +1,7 @@
 // principal_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:aditya_contacts/widgets/custom_widgets.dart';
+// import 'package:aditya_contacts/widgets/custom_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
 import '../provider/provider.dart'; // Adjust the path as needed
@@ -24,8 +24,6 @@ class PrincipalScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       body: Consumer<PrincipalDataProvider>(
