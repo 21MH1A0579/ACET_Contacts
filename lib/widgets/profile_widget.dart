@@ -2,6 +2,7 @@ import 'package:aditya_contacts/widgets/custom_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
@@ -62,14 +63,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
       if (permission.isGranted) {
         // Create a new contact with the provided information
+
         Contact newContact = Contact(
           givenName: widget.name,
           phones: [Item(label: "mobile", value: widget.phonenumber1)],
           emails: [Item(label: "work", value: widget.email)],
+          jobTitle: widget.designation,
         );
 
         try {
           await ContactsService.addContact(newContact);
+          List<Contact> data = await ContactsService.getContacts(query : widget.name);
+          await ContactsService.openExistingContact(data.first);
+
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -167,7 +173,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     // overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -178,9 +184,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w300,
+                                      color: Colors.green,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
@@ -188,8 +194,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             const SizedBox(width: 10),
                             Container(
-                              height: 50,
-                              width: 80,
+                              height: 60,
+                              width: 100,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 color: Colors.orange.shade200,
@@ -202,13 +208,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
+                                      color: Colors.black54
                                     ),
                                   ),
                                   Text(
                                     widget.title,
                                     style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ],
@@ -219,7 +227,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         const SizedBox(height: 10),
                         const Text(
                           "Aditya College of Engineering and Technology",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         const Divider(
                           color: Colors.black,
@@ -283,49 +291,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          showModalBottomSheet(
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.vertical(
-                                                top: Radius.circular(15.0),
-                                              ),
-                                            ),
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                height: 350,
-                                                decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    topRight:
-                                                        Radius.circular(20),
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      const Text('BottomSheet'),
-                                                      ElevatedButton(
-                                                        child:
-                                                            const Text('Close'),
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          addContact();
                                         },
                                         icon: const Icon(
                                             Icons.person_add_alt_1_rounded),
