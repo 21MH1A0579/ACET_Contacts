@@ -69,7 +69,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         );
 
         try {
-          await ContactsService.addContact(newContact);
+          await ContactsService.openExistingContact(newContact);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -283,49 +283,50 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          showModalBottomSheet(
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.vertical(
-                                                top: Radius.circular(15.0),
-                                              ),
-                                            ),
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Container(
-                                                height: 350,
-                                                decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                    topLeft:
-                                                        Radius.circular(20),
-                                                    topRight:
-                                                        Radius.circular(20),
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: <Widget>[
-                                                      const Text('BottomSheet'),
-                                                      ElevatedButton(
-                                                        child:
-                                                            const Text('Close'),
-                                                        onPressed: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                          // showModalBottomSheet(
+                                          //   shape: const RoundedRectangleBorder(
+                                          //     borderRadius:
+                                          //         BorderRadius.vertical(
+                                          //       top: Radius.circular(15.0),
+                                          //     ),
+                                          //   ),
+                                          //   context: context,
+                                          //   builder: (BuildContext context) {
+                                          //     return Container(
+                                          //       height: 350,
+                                          //       decoration: const BoxDecoration(
+                                          //         borderRadius:
+                                          //             BorderRadius.only(
+                                          //           topLeft:
+                                          //               Radius.circular(20),
+                                          //           topRight:
+                                          //               Radius.circular(20),
+                                          //         ),
+                                          //       ),
+                                          //       child: Center(
+                                          //         child: Column(
+                                          //           mainAxisAlignment:
+                                          //               MainAxisAlignment.start,
+                                          //           crossAxisAlignment:
+                                          //               CrossAxisAlignment
+                                          //                   .start,
+                                          //           children: <Widget>[
+                                          //             const Text('BottomSheet'),
+                                          //             ElevatedButton(
+                                          //               child:
+                                          //                   const Text('Close'),
+                                          //               onPressed: () {
+                                          //                 Navigator.pop(
+                                          //                     context);
+                                          //               },
+                                          //             ),
+                                          //           ],
+                                          //         ),
+                                          //       ),
+                                          //     );
+                                          //   },
+                                          // );
+                                          addContact();
                                         },
                                         icon: const Icon(
                                             Icons.person_add_alt_1_rounded),
@@ -415,6 +416,7 @@ class Committee_ProfileWidget extends StatefulWidget {
 class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     Future<void> makeUricall(
       String scheme,
       String address,
@@ -434,185 +436,445 @@ class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
     final ispotraint =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: primarycolor,
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
-          widget.committe_name,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontStyle: FontStyle.italic,
-          ),
-        ),
-        backgroundColor: primarycolor,
+        title: Text(widget.committe_name),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ClipOval(
-                        child: CircleAvatar(
-                          radius:
-                              ispotraint ? size.width / 3.80 : size.width / 7,
-                          // backgroundColor: Colors.orange.shade500,
-                          child: Image.asset("asserts/no_image.png"),
+            Container(
+              decoration: BoxDecoration(
+                  // color: Colors.purpleAccent,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, 6.0),
+                      blurRadius: 15.0,
+                      spreadRadius: 2,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(0.0, 0.0),
+                      blurRadius: 0.0,
+                      spreadRadius: 0.0,
+                    ),
+                  ]),
+              width: double.infinity,
+              height: height * 0.3,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const CircleAvatar(
+                          radius: 40,
+                          foregroundImage: AssetImage("asserts/profile.jpg"),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        widget.name1,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
-                      ),
-                      const Text(
-                        "&",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
-                      ),
-                      Text(
-                        widget.name2,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Custom_IconButton(icon: Icons.star_border, function: () {}),
-                Custom_IconButton(icon: Icons.edit, function: () => {}),
-                Custom_IconButton(
-                    icon: Icons.person_add_alt, function: () async {}),
-              ],
-            ),
-            const Divider(),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                "Contact Details",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Divider(
-              thickness: 2,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ExpansionTile(
-                backgroundColor: Colors.blue.shade100,
-                iconColor: Colors.red,
-                initiallyExpanded: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                collapsedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Text(
-                  widget.name1,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w500),
-                ),
-                children: [
-                  Column(
-                    children: [
-                      const Divider(
-                        color: Colors.black,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Custom_IconButton(
-                              icon: Icons.message_outlined,
-                              function: () =>
-                                  makeUricall('sms', widget.phonenumber1)),
-                          title: Text(
-                            widget.phonenumber1,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.normal),
+                        const SizedBox(width: 60),
+                        Flexible(
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.name1,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                "Aditya College of Engineering\n and Technology",
+                              )
+                            ],
                           ),
-                          trailing: Custom_IconButton(
-                              icon: Icons.phone,
-                              function: () =>
-                                  makeUricall('tel', widget.phonenumber1)),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 30,
+                      color: Colors.grey.shade300,
+                      thickness: 0.5,
+                    ),
+                    Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "+91 ${widget.phonenumber1}",
+                                  style: const TextStyle(fontSize: 16),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                children: [
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      makeUricall("tel", widget.phonenumber1);
+                                    },
+                                    icon: const Icon(Icons.phone),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      makeUricall("sms", widget.phonenumber1);
+                                    },
+                                    icon: const Icon(Icons.chat_rounded),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                        Icons.person_add_alt_1_rounded),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const Divider(),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ExpansionTile(
-                backgroundColor: Colors.blue.shade100,
-                iconColor: Colors.red,
-                initiallyExpanded: true,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                collapsedShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15)),
-                title: Text(
-                  widget.name2,
-                  style: const TextStyle(
-                      fontSize: 22, fontWeight: FontWeight.w500),
+                    ),
+                  ],
                 ),
-                children: [
-                  Column(
-                    children: [
-                      const Divider(
-                        color: Colors.black,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          leading: Custom_IconButton(
-                              icon: Icons.message_outlined,
-                              function: () =>
-                                  makeUricall('sms', widget.phonenumber2)),
-                          title: Text(
-                            widget.phonenumber2,
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.normal),
-                          ),
-                          trailing: Custom_IconButton(
-                              icon: Icons.phone,
-                              function: () =>
-                                  makeUricall('tel', widget.phonenumber2)),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
               ),
             ),
-            const SizedBox(
-              height: 50,
-            )
+            const SizedBox(height: 100),
+            Container(
+              decoration: BoxDecoration(
+                  // color: Colors.purpleAccent,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black12,
+                      offset: Offset(0.0, 6.0),
+                      blurRadius: 15.0,
+                      spreadRadius: 2,
+                    ),
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: Offset(0.0, 0.0),
+                      blurRadius: 0.0,
+                      spreadRadius: 0.0,
+                    ),
+                  ]),
+              width: double.infinity,
+              height: height * 0.3,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const CircleAvatar(
+                          radius: 40,
+                          foregroundImage: AssetImage("asserts/profile.jpg"),
+                        ),
+                        const SizedBox(width: 60),
+                        Flexible(
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.name2,
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                softWrap: true,
+                                "Aditya College of Engineering\n and Technology",
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    Divider(
+                      height: 30,
+                      color: Colors.grey.shade300,
+                      thickness: 0.5,
+                    ),
+                    Container(
+                      height: 55,
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade200,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "+91 ${widget.phonenumber1}",
+                                  style: const TextStyle(fontSize: 16),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: Row(
+                                children: [
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      makeUricall("tel", widget.phonenumber2);
+                                    },
+                                    icon: const Icon(Icons.phone),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      makeUricall("sms", widget.phonenumber2);
+                                    },
+                                    icon: const Icon(Icons.chat_rounded),
+                                  ),
+                                  const VerticalDivider(
+                                    width: 0.5,
+                                  ),
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(
+                                        Icons.person_add_alt_1_rounded),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
+      // appBar: AppBar(
+      //   foregroundColor: Colors.white,
+      //   centerTitle: true,
+      //   title: Text(
+      //     widget.committe_name,
+      //     style: const TextStyle(
+      //       color: Colors.white,
+      //       fontWeight: FontWeight.bold,
+      //     ),
+      //   ),
+      //   backgroundColor: primarycolor,
+      // ),
+      // body: SingleChildScrollView(
+      //   child: Column(
+      //     children: [
+      //       Padding(
+      //         padding: const EdgeInsets.only(top: 8.0),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.center,
+      //           children: [
+      //             Column(
+      //               mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //               children: [
+      //                 ClipOval(
+      //                   child: CircleAvatar(
+      //                     radius:
+      //                         ispotraint ? size.width / 3.80 : size.width / 7,
+      //                     // backgroundColor: Colors.orange.shade500,
+      //                     child: Image.asset("asserts/no_image.png"),
+      //                   ),
+      //                 ),
+      //                 const SizedBox(
+      //                   height: 10,
+      //                 ),
+      //                 Text(
+      //                   widget.name1,
+      //                   style: const TextStyle(
+      //                       fontWeight: FontWeight.bold, fontSize: 17),
+      //                 ),
+      //                 const Text(
+      //                   "&",
+      //                   style: TextStyle(
+      //                       fontWeight: FontWeight.bold, fontSize: 17),
+      //                 ),
+      //                 Text(
+      //                   widget.name2,
+      //                   style: const TextStyle(
+      //                       fontWeight: FontWeight.bold, fontSize: 17),
+      //                 ),
+      //                 const SizedBox(
+      //                   height: 10,
+      //                 ),
+      //                 const Text(
+      //                   "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
+      //                   style: TextStyle(
+      //                       fontWeight: FontWeight.bold, fontSize: 14),
+      //                 ),
+      //               ],
+      //             )
+      //           ],
+      //         ),
+      //       ),
+      //       const Divider(),
+      //       Row(
+      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //         children: [
+      //           Custom_IconButton(icon: Icons.star_border, function: () {}),
+      //           Custom_IconButton(icon: Icons.edit, function: () => {}),
+      //           Custom_IconButton(
+      //               icon: Icons.person_add_alt, function: () async {}),
+      //         ],
+      //       ),
+      //       const Divider(),
+      //       const Padding(
+      //         padding: EdgeInsets.all(8.0),
+      //         child: Text(
+      //           "Contact Details",
+      //           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+      //         ),
+      //       ),
+      //       const Divider(
+      //         thickness: 2,
+      //       ),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: ExpansionTile(
+      //           backgroundColor: Colors.blue.shade100,
+      //           iconColor: Colors.red,
+      //           initiallyExpanded: true,
+      //           shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(15)),
+      //           collapsedShape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(15)),
+      //           title: Text(
+      //             widget.name1,
+      //             style: const TextStyle(
+      //                 fontSize: 22, fontWeight: FontWeight.w500),
+      //           ),
+      //           children: [
+      //             Column(
+      //               children: [
+      //                 const Divider(
+      //                   color: Colors.black,
+      //                 ),
+      //                 Padding(
+      //                   padding: const EdgeInsets.all(8.0),
+      //                   child: ListTile(
+      //                     leading: Custom_IconButton(
+      //                         icon: Icons.message_outlined,
+      //                         function: () =>
+      //                             makeUricall('sms', widget.phonenumber1)),
+      //                     title: Text(
+      //                       widget.phonenumber1,
+      //                       style: const TextStyle(
+      //                           fontSize: 20, fontWeight: FontWeight.normal),
+      //                     ),
+      //                     trailing: Custom_IconButton(
+      //                         icon: Icons.phone,
+      //                         function: () =>
+      //                             makeUricall('tel', widget.phonenumber1)),
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       const Divider(),
+      //       Padding(
+      //         padding: const EdgeInsets.all(8.0),
+      //         child: ExpansionTile(
+      //           backgroundColor: Colors.blue.shade100,
+      //           iconColor: Colors.red,
+      //           initiallyExpanded: true,
+      //           shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(15)),
+      //           collapsedShape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(15)),
+      //           title: Text(
+      //             widget.name2,
+      //             style: const TextStyle(
+      //                 fontSize: 22, fontWeight: FontWeight.w500),
+      //           ),
+      //           children: [
+      //             Column(
+      //               children: [
+      //                 const Divider(
+      //                   color: Colors.black,
+      //                 ),
+      //                 Padding(
+      //                   padding: const EdgeInsets.all(8.0),
+      //                   child: ListTile(
+      //                     leading: Custom_IconButton(
+      //                         icon: Icons.message_outlined,
+      //                         function: () =>
+      //                             makeUricall('sms', widget.phonenumber2)),
+      //                     title: Text(
+      //                       widget.phonenumber2,
+      //                       style: const TextStyle(
+      //                           fontSize: 20, fontWeight: FontWeight.normal),
+      //                     ),
+      //                     trailing: Custom_IconButton(
+      //                         icon: Icons.phone,
+      //                         function: () =>
+      //                             makeUricall('tel', widget.phonenumber2)),
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //       const SizedBox(
+      //         height: 50,
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }

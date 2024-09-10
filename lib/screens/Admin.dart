@@ -53,32 +53,32 @@ class _AdminLoginPageState extends State<AdminLoginPage>
 
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
+    final bool isUsernameNumeric = RegExp(r'^\d+$').hasMatch(username);
 
-    if (username.isEmpty || password.isEmpty) {
+    if (username.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Please enter both username and password'),
+        const SnackBar(
+          content: Text('Please enter both Employee Id and password'),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(
-            bottom: bottomPadding > 0 ? bottomPadding + 10 : 10,
+            bottom: 20,
             left: 20,
             right: 20,
           ),
         ),
       );
+
       setState(() {
         isLoginPageLoading = false;
       });
       return;
-    }
-
-    final bool isUsernameNumeric = RegExp(r'^\d+$').hasMatch(username);
-
-    if (isUsernameNumeric) {
+    } else if (isUsernameNumeric) {
       if (password != '$username@acet') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
+            behavior: SnackBarBehavior.floating,
+            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             content: Text('Invalid Password'),
             backgroundColor: Colors.red,
           ),
@@ -197,135 +197,133 @@ class _AdminLoginPageState extends State<AdminLoginPage>
     final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      body: Padding(
-        padding: const EdgeInsets.only(top: 50.0),
-        child: SingleChildScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SafeArea(child: Container()),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Stack(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          height: height / 1.4,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12,
-                                offset: Offset(0.0, 6.0),
-                                blurRadius: 15.0,
-                                spreadRadius: 2,
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            color: Colors.white,
+            height: height,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SafeArea(child: Container()),
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Stack(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: height * 0.8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(0.0, 6.0),
+                              blurRadius: 15.0,
+                              spreadRadius: 2,
+                            ),
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              const Image(
+                                width: 100,
+                                image: AssetImage("asserts/adityalogo.jpg"),
                               ),
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(0.0, 0.0),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
+                              const Text(
+                                "Welcome to ACET Contacts\nPlease Login with your credentials",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16),
                               ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                const Image(
-                                  width: 100,
-                                  image: AssetImage("asserts/adityalogo.jpg"),
+                              const SizedBox(height: 45),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: InputTextFeild(
+                                  icon: Icons.email,
+                                  label: "Enter Your Employee ID",
+                                  controller: usernameController,
                                 ),
-                                const Text(
-                                  "Welcome to ACET Contacts\nPlease Login with your credentials",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16),
+                              ),
+                              const SizedBox(height: 10),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 15),
+                                child: InputTextFeild(
+                                  icon: Icons.lock,
+                                  label: "Enter Your Password",
+                                  controller: passwordController,
+                                  IsObscure: true,
                                 ),
-                                const SizedBox(height: 45),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: InputTextFeild(
-                                    icon: Icons.email,
-                                    label: "Enter Your Employee ID",
-                                    controller: usernameController,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  child: InputTextFeild(
-                                    icon: Icons.lock,
-                                    label: "Enter Your Password",
-                                    controller: passwordController,
-                                    IsObscure: true,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15.0),
-                                  child: InkWell(
-                                    onTap: _login,
-                                    splashColor: Colors.red,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: primarycolor,
-                                      ),
-                                      width: 100,
-                                      height: 50,
-                                      child: Center(
-                                        child: isLoginPageLoading
-                                            ? const CircularProgressIndicator(
+                              ),
+                              const SizedBox(height: 10),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: InkWell(
+                                  onTap: _login,
+                                  splashColor: Colors.red,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: primarycolor,
+                                    ),
+                                    width: 100,
+                                    height: 50,
+                                    child: Center(
+                                      child: isLoginPageLoading
+                                          ? const CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )
+                                          : const Text(
+                                              "LOGIN",
+                                              style: TextStyle(
                                                 color: Colors.white,
-                                              )
-                                            : const Text(
-                                                "LOGIN",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w800,
-                                                ),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w800,
                                               ),
-                                      ),
+                                            ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                const Text(
-                                    textAlign: TextAlign.center,
-                                    "Any Issues?\n Please contact IQAC"),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 10),
+                              const Text(
+                                  textAlign: TextAlign.center,
+                                  "Any Issues?\n Please contact IQAC"),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                            onTap: () => Navigator.pop(context),
-                            child: const Icon(
-                              Icons.arrow_back,
-                              size: 30,
-                              color: Color.fromARGB(255, 14, 5, 5),
-                            ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: const Icon(
+                            Icons.arrow_back,
+                            size: 30,
+                            color: Color.fromARGB(255, 14, 5, 5),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
