@@ -12,7 +12,6 @@ import 'package:aditya_contacts/screens/departments.dart';
 import 'package:aditya_contacts/screens/principal.dart';
 import 'package:aditya_contacts/widgets/custom_container.dart';
 import 'package:provider/provider.dart';
-import 'dummy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
