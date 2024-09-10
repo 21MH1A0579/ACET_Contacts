@@ -2,6 +2,7 @@ import 'package:aditya_contacts/widgets/custom_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../widgets/constants.dart';
@@ -62,14 +63,19 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
       if (permission.isGranted) {
         // Create a new contact with the provided information
+
         Contact newContact = Contact(
           givenName: widget.name,
           phones: [Item(label: "mobile", value: widget.phonenumber1)],
           emails: [Item(label: "work", value: widget.email)],
+          jobTitle: widget.designation,
         );
 
         try {
-          await ContactsService.openExistingContact(newContact);
+          await ContactsService.addContact(newContact);
+          List<Contact> data =
+              await ContactsService.getContacts(query: widget.name);
+          await ContactsService.openExistingContact(data.first);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -167,7 +173,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     // overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 20,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
@@ -178,9 +184,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w300,
+                                      color: Colors.green,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ],
@@ -188,8 +194,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             const SizedBox(width: 10),
                             Container(
-                              height: 50,
-                              width: 80,
+                              height: 60,
+                              width: 100,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
                                 color: Colors.orange.shade200,
@@ -200,15 +206,16 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   const Text(
                                     "Emp ID",
                                     style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black54),
                                   ),
                                   Text(
                                     widget.title,
                                     style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 12,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ],
@@ -219,7 +226,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         const SizedBox(height: 10),
                         const Text(
                           "Aditya College of Engineering and Technology",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         const Divider(
                           color: Colors.black,
@@ -283,49 +290,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          // showModalBottomSheet(
-                                          //   shape: const RoundedRectangleBorder(
-                                          //     borderRadius:
-                                          //         BorderRadius.vertical(
-                                          //       top: Radius.circular(15.0),
-                                          //     ),
-                                          //   ),
-                                          //   context: context,
-                                          //   builder: (BuildContext context) {
-                                          //     return Container(
-                                          //       height: 350,
-                                          //       decoration: const BoxDecoration(
-                                          //         borderRadius:
-                                          //             BorderRadius.only(
-                                          //           topLeft:
-                                          //               Radius.circular(20),
-                                          //           topRight:
-                                          //               Radius.circular(20),
-                                          //         ),
-                                          //       ),
-                                          //       child: Center(
-                                          //         child: Column(
-                                          //           mainAxisAlignment:
-                                          //               MainAxisAlignment.start,
-                                          //           crossAxisAlignment:
-                                          //               CrossAxisAlignment
-                                          //                   .start,
-                                          //           children: <Widget>[
-                                          //             const Text('BottomSheet'),
-                                          //             ElevatedButton(
-                                          //               child:
-                                          //                   const Text('Close'),
-                                          //               onPressed: () {
-                                          //                 Navigator.pop(
-                                          //                     context);
-                                          //               },
-                                          //             ),
-                                          //           ],
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //   },
-                                          // );
                                           addContact();
                                         },
                                         icon: const Icon(
@@ -416,7 +380,6 @@ class Committee_ProfileWidget extends StatefulWidget {
 class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     Future<void> makeUricall(
       String scheme,
       String address,
@@ -432,16 +395,23 @@ class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
       }
     }
 
+    final height = MediaQuery.of(context).size.height;
     final Size size = MediaQuery.of(context).size;
     final ispotraint =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: primarycolor,
         foregroundColor: Colors.white,
         centerTitle: true,
-        title: Text(widget.committe_name),
+        title: Text(
+          widget.committe_name,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
+        ),
+        backgroundColor: primarycolor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -482,11 +452,14 @@ class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
                           radius: 40,
                           foregroundImage: AssetImage("asserts/profile.jpg"),
                         ),
-                        const SizedBox(width: 60),
+                        const SizedBox(width: 30),
                         Flexible(
                           child: Column(
                             children: [
                               Text(
+                                softWrap: true,
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
                                 widget.name1,
                                 style: const TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.bold),
@@ -697,184 +670,6 @@ class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
           ],
         ),
       ),
-      // appBar: AppBar(
-      //   foregroundColor: Colors.white,
-      //   centerTitle: true,
-      //   title: Text(
-      //     widget.committe_name,
-      //     style: const TextStyle(
-      //       color: Colors.white,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      //   backgroundColor: primarycolor,
-      // ),
-      // body: SingleChildScrollView(
-      //   child: Column(
-      //     children: [
-      //       Padding(
-      //         padding: const EdgeInsets.only(top: 8.0),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             Column(
-      //               mainAxisAlignment: MainAxisAlignment.spaceAround,
-      //               children: [
-      //                 ClipOval(
-      //                   child: CircleAvatar(
-      //                     radius:
-      //                         ispotraint ? size.width / 3.80 : size.width / 7,
-      //                     // backgroundColor: Colors.orange.shade500,
-      //                     child: Image.asset("asserts/no_image.png"),
-      //                   ),
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 10,
-      //                 ),
-      //                 Text(
-      //                   widget.name1,
-      //                   style: const TextStyle(
-      //                       fontWeight: FontWeight.bold, fontSize: 17),
-      //                 ),
-      //                 const Text(
-      //                   "&",
-      //                   style: TextStyle(
-      //                       fontWeight: FontWeight.bold, fontSize: 17),
-      //                 ),
-      //                 Text(
-      //                   widget.name2,
-      //                   style: const TextStyle(
-      //                       fontWeight: FontWeight.bold, fontSize: 17),
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 10,
-      //                 ),
-      //                 const Text(
-      //                   "ADITYA COLLEGE OF ENGINEERING & TECHNOLOGY",
-      //                   style: TextStyle(
-      //                       fontWeight: FontWeight.bold, fontSize: 14),
-      //                 ),
-      //               ],
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //       const Divider(),
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //         children: [
-      //           Custom_IconButton(icon: Icons.star_border, function: () {}),
-      //           Custom_IconButton(icon: Icons.edit, function: () => {}),
-      //           Custom_IconButton(
-      //               icon: Icons.person_add_alt, function: () async {}),
-      //         ],
-      //       ),
-      //       const Divider(),
-      //       const Padding(
-      //         padding: EdgeInsets.all(8.0),
-      //         child: Text(
-      //           "Contact Details",
-      //           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-      //         ),
-      //       ),
-      //       const Divider(
-      //         thickness: 2,
-      //       ),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: ExpansionTile(
-      //           backgroundColor: Colors.blue.shade100,
-      //           iconColor: Colors.red,
-      //           initiallyExpanded: true,
-      //           shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(15)),
-      //           collapsedShape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(15)),
-      //           title: Text(
-      //             widget.name1,
-      //             style: const TextStyle(
-      //                 fontSize: 22, fontWeight: FontWeight.w500),
-      //           ),
-      //           children: [
-      //             Column(
-      //               children: [
-      //                 const Divider(
-      //                   color: Colors.black,
-      //                 ),
-      //                 Padding(
-      //                   padding: const EdgeInsets.all(8.0),
-      //                   child: ListTile(
-      //                     leading: Custom_IconButton(
-      //                         icon: Icons.message_outlined,
-      //                         function: () =>
-      //                             makeUricall('sms', widget.phonenumber1)),
-      //                     title: Text(
-      //                       widget.phonenumber1,
-      //                       style: const TextStyle(
-      //                           fontSize: 20, fontWeight: FontWeight.normal),
-      //                     ),
-      //                     trailing: Custom_IconButton(
-      //                         icon: Icons.phone,
-      //                         function: () =>
-      //                             makeUricall('tel', widget.phonenumber1)),
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       const Divider(),
-      //       Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: ExpansionTile(
-      //           backgroundColor: Colors.blue.shade100,
-      //           iconColor: Colors.red,
-      //           initiallyExpanded: true,
-      //           shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(15)),
-      //           collapsedShape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(15)),
-      //           title: Text(
-      //             widget.name2,
-      //             style: const TextStyle(
-      //                 fontSize: 22, fontWeight: FontWeight.w500),
-      //           ),
-      //           children: [
-      //             Column(
-      //               children: [
-      //                 const Divider(
-      //                   color: Colors.black,
-      //                 ),
-      //                 Padding(
-      //                   padding: const EdgeInsets.all(8.0),
-      //                   child: ListTile(
-      //                     leading: Custom_IconButton(
-      //                         icon: Icons.message_outlined,
-      //                         function: () =>
-      //                             makeUricall('sms', widget.phonenumber2)),
-      //                     title: Text(
-      //                       widget.phonenumber2,
-      //                       style: const TextStyle(
-      //                           fontSize: 20, fontWeight: FontWeight.normal),
-      //                     ),
-      //                     trailing: Custom_IconButton(
-      //                         icon: Icons.phone,
-      //                         function: () =>
-      //                             makeUricall('tel', widget.phonenumber2)),
-      //                   ),
-      //                 ),
-      //               ],
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       const SizedBox(
-      //         height: 50,
-      //       )
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
