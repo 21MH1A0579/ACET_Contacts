@@ -1,5 +1,3 @@
 {
     "pieces.cloudCapabilities": "Blended",
-    "pieces.telemetry": true,
-    "java.compile.nullAnalysis.mode": "disabled"
 }

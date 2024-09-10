@@ -53,32 +53,32 @@ class _AdminLoginPageState extends State<AdminLoginPage>
 
     String username = usernameController.text.trim();
     String password = passwordController.text.trim();
-    final bool isUsernameNumeric = RegExp(r'^\d+$').hasMatch(username);
 
-    if (username.isEmpty) {
+    if (username.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter both Employee Id and password'),
+        SnackBar(
+          content: const Text('Please enter both username and password'),
           backgroundColor: Colors.red,
           behavior: SnackBarBehavior.floating,
           margin: EdgeInsets.only(
-            bottom: 20,
+            bottom: bottomPadding > 0 ? bottomPadding + 10 : 10,
             left: 20,
             right: 20,
           ),
         ),
       );
-
       setState(() {
         isLoginPageLoading = false;
       });
       return;
-    } else if (isUsernameNumeric) {
+    }
+
+    final bool isUsernameNumeric = RegExp(r'^\d+$').hasMatch(username);
+
+    if (isUsernameNumeric) {
       if (password != '$username@acet') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            behavior: SnackBarBehavior.floating,
-            margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
             content: Text('Invalid Password'),
             backgroundColor: Colors.red,
           ),
@@ -321,6 +321,7 @@ class _AdminLoginPageState extends State<AdminLoginPage>
                         ),
                       ),
                     ],
+     
                   ),
                 ),
               ],

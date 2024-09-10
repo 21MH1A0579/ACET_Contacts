@@ -225,9 +225,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                          "Aditya College of Engineering and Technology",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
+                            "Aditya College of Engineering and Technology",style: TextStyle(fontWeight:FontWeight.bold),),
                         const Divider(
                           color: Colors.black,
                           thickness: 0.5,
@@ -394,7 +392,6 @@ class _Committee_ProfileWidgetState extends State<Committee_ProfileWidget> {
         throw 'Could not launch $address';
       }
     }
-
     final height = MediaQuery.of(context).size.height;
     final Size size = MediaQuery.of(context).size;
     final ispotraint =
