@@ -218,7 +218,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                         const SizedBox(height: 10),
                         const Text(
-                            "Aditya College of Engineering and Technology",style: TextStyle(fontWeight:FontWeight.bold),),
+                          "Aditya College of Engineering and Technology",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         const Divider(
                           color: Colors.black,
                           thickness: 0.5,
@@ -281,7 +283,49 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          addContact();
+                                          showModalBottomSheet(
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
+                                                top: Radius.circular(15.0),
+                                              ),
+                                            ),
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Container(
+                                                height: 350,
+                                                decoration: const BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(20),
+                                                    topRight:
+                                                        Radius.circular(20),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      const Text('BottomSheet'),
+                                                      ElevatedButton(
+                                                        child:
+                                                            const Text('Close'),
+                                                        onPressed: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
                                         },
                                         icon: const Icon(
                                             Icons.person_add_alt_1_rounded),
