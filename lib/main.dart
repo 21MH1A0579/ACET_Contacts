@@ -3,6 +3,7 @@ import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
 import 'package:aditya_contacts/screens/info.dart';
+import 'package:aditya_contacts/screens/transport.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aditya_contacts/screens/IQAC.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) =>   HodsDataProvider()),
         ChangeNotifierProvider(create: (_) => CommitteeDataProvider()),
         ChangeNotifierProvider(create: (_) => IqacDataProvider()),
+        ChangeNotifierProvider(create: (_) => TransportDataProvider()),
       ],
       child: const MyApp(),
     ),
@@ -223,7 +225,8 @@ class HomeScreen extends StatelessWidget {
                   Custom_Container(
                       imgaddress: "asserts/transport.svg",
                       title: "Transport",
-                      onTap: () {}),
+                      onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>TransportScreen()))
+                  ),
                   Custom_Container(
                       imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: () {}),
                 ],
@@ -237,7 +240,7 @@ class HomeScreen extends StatelessWidget {
                       imgaddress: "asserts/emergency.svg",
                       title: "Emergency",
                       onTap: () async{
-                        insert_principal_data();
+                        // insert_principal_data();
                       }),
                   Custom_Container(
                       imgaddress: "asserts/searchperson.svg",
@@ -251,6 +254,14 @@ class HomeScreen extends StatelessWidget {
                     : MainAxisAlignment.spaceAround,
                 children: [
                   Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLoginPage())),),
+
+
+
+                  Custom_Container(
+                      imgaddress: "asserts/sports.svg",
+                      title: "Sports",
+                      onTap: () {}
+                  ),
                 ],
               )
             ],

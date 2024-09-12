@@ -176,3 +176,43 @@ class IqacDataProvider extends ChangeNotifier {
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+class TransportDataProvider extends ChangeNotifier {
+  List<Map<String, dynamic>> _transports = [];
+  bool _isLoading = true;
+
+  List<Map<String, dynamic>> get transports => _transports;
+  bool get isLoading => _isLoading;
+
+  TransportDataProvider() {
+    fetchTransportData();
+  }
+
+  Future<void> fetchTransportData() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("transport")
+          .get();
+      _transports = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print('Failed to load data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}
+
+
+
+
