@@ -47,17 +47,17 @@ class Hods_Screen extends StatelessWidget {
                   name: hod['EmployeeName'] ?? 'No Name',
                   designation: "HOD - ${hod['Dept'] ?? 'No Department'}",
                   ontap: () {
-                    if (hod['Mobile.No'] != null && hod['Mobile.No']!.isNotEmpty) {
+                    if (hod['MobileNo'] != null && hod['MobileNo']!.isNotEmpty) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ProfileWidget(
                             name: hod['EmployeeName']!,
-                            phonenumber1: hod['Mobile.No']!,
-                            phonenumber2: '',
+                            phonenumber1: hod['MobileNo']!,
+                            phonenumber2: 'null',
                             designation: hod['Designation'] ?? 'No Designation',
                             email: hod['EmailId'] ?? 'No Email',
-                            title: "HOD - ${hod['Dept'] ?? 'No Department'}",
+                            title: hod['EmpId'],
                           ),
                         ),
                       );
