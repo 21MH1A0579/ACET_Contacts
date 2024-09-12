@@ -2,7 +2,9 @@ import 'package:aditya_contacts/provider/provider.dart';
 import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
+import 'package:aditya_contacts/screens/emergency.dart';
 import 'package:aditya_contacts/screens/info.dart';
+import 'package:aditya_contacts/screens/login.dart';
 import 'package:aditya_contacts/screens/sports.dart';
 import 'package:aditya_contacts/screens/transport.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,6 +39,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => IqacDataProvider()),
         ChangeNotifierProvider(create: (_) => TransportDataProvider()),
         ChangeNotifierProvider(create: (_) => SportsDataProvider()),
+        ChangeNotifierProvider(create: (_) => EmergencyDataProvider()),
       ],
       child: const MyApp(),
     ),
@@ -75,11 +78,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     // Initialize the animation controller and animation
     _controller = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 2),
       vsync: this,
     );
 
-    _animation = Tween<double>(begin: 1.2, end: 2.1).animate(CurvedAnimation(
+    _animation = Tween<double>(begin: 1.2, end: 2).animate(CurvedAnimation(
       parent: _controller,
       curve: Curves.decelerate,
     ));
@@ -94,7 +97,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     await Future.delayed(const Duration(seconds: 3), () {});
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const HomeScreen()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 
@@ -230,7 +233,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>TransportScreen()))
                   ),
                   Custom_Container(
-                      imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: () {}),
+                      imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage())))
                 ],
               ),
               Row(
@@ -241,9 +244,7 @@ class HomeScreen extends StatelessWidget {
                   Custom_Container(
                       imgaddress: "asserts/emergency.svg",
                       title: "Emergency",
-                      onTap: () async{
-                        // insert_principal_data();
-                      }),
+                      onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>EmergencyScreen()))),
                   Custom_Container(
                       imgaddress: "asserts/searchperson.svg",
                       title: "Search",
