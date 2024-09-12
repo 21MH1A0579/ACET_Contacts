@@ -216,3 +216,55 @@ class TransportDataProvider extends ChangeNotifier {
 
 
 
+class SportsDataProvider extends ChangeNotifier {
+  List<Map<String, dynamic>> _sports = [];
+  bool _isLoading = true;
+
+  List<Map<String, dynamic>> get sports => _sports;
+  bool get isLoading => _isLoading;
+
+  SportsDataProvider() {
+    fetchSportsData();
+  }
+
+  Future<void> fetchSportsData() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("sports")
+          .get();
+      _sports = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print('Failed to load data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}
+
+
+class EmergencyDataProvider extends ChangeNotifier {
+  List<Map<String, dynamic>> _emergencies = [];
+  bool _isLoading = true;
+
+  List<Map<String, dynamic>> get emergencies => _emergencies;
+  bool get isLoading => _isLoading;
+
+  EmergencyDataProvider() {
+    fetchEmergencyData();
+  }
+
+  Future<void> fetchEmergencyData() async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection("emergency")
+          .get();
+      _emergencies = snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+    } catch (e) {
+      print('Failed to load data: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+}

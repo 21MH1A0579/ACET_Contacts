@@ -1,13 +1,14 @@
-// transport_screen.dart
+// sports_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+ // Adjust the path as needed
 import '../provider/provider.dart';
 import '../widgets/constants.dart';
 import '../widgets/custom_widgets.dart';
 import '../widgets/profile_widget.dart';
 
-class TransportScreen extends StatelessWidget {
-  const TransportScreen({super.key});
+class SportsScreen extends StatelessWidget {
+  const SportsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class TransportScreen extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          "Transport",
+          "Sports",
           style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
@@ -25,39 +26,39 @@ class TransportScreen extends StatelessWidget {
         ),
         backgroundColor: primarycolor,
       ),
-      body: Consumer<TransportDataProvider>(
+      body: Consumer<SportsDataProvider>(
         builder: (context, provider, child) {
           if (provider.isLoading) {
             return Center(
               child: CircularProgressIndicator(color: primarycolor),
             );
-          } else if (provider.transports.isEmpty) {
+          } else if (provider.sports.isEmpty) {
             return Center(
               child: Text(
-                "No Transport data available",
+                "No Sports data available",
                 style: TextStyle(fontSize: 18, color: primarycolor),
               ),
             );
           } else {
             return ListView.builder(
-              itemCount: provider.transports.length,
+              itemCount: provider.sports.length,
               itemBuilder: (context, index) {
-                final transport = provider.transports[index];
+                final sport = provider.sports[index];
                 return Custom_ListItem(
-                  name: transport['name'] ?? 'No Name',
-                  designation: transport['designation'],
+                  name: sport['name'] ?? 'No Name',
+                  designation: sport['designation'],
                   ontap: () {
-                    if (transport['number'] != null && transport['number']!.isNotEmpty) {
+                    if (sport['number'] != null && sport['number']!.isNotEmpty) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ProfileWidget(
-                            name: transport['name']!,
-                            phonenumber1: transport['number']!,
-                            phonenumber2: 'null',
-                            designation: transport['designation'] ?? 'No Designation',
-                            email: transport['EmailId'] ?? 'No Email',
-                            title: transport['name']
+                              name: sport['name']!,
+                              phonenumber1: sport['number']!,
+                              phonenumber2: 'null',
+                              designation: sport['designation'] ?? 'No Designation',
+                              email: sport['EmailId'] ?? 'No Email',
+                              title: sport['name']
                           ),
                         ),
                       );

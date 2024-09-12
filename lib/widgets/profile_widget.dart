@@ -192,7 +192,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               ),
                             ),
                             const SizedBox(width: 10),
-                            widget.title=="NODATA"||widget.title=="DEANS"?Text(""): Container(
+                            !widget.title.contains(RegExp(r'\d'))?Text(""): Container(
                               height: 60,
                               width: 100,
                               decoration: BoxDecoration(

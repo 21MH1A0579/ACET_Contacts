@@ -3,6 +3,7 @@ import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/screens/Search_Screen.dart';
 import 'package:aditya_contacts/screens/committee.dart';
 import 'package:aditya_contacts/screens/info.dart';
+import 'package:aditya_contacts/screens/sports.dart';
 import 'package:aditya_contacts/screens/transport.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:aditya_contacts/screens/IQAC.dart';
@@ -35,6 +36,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => CommitteeDataProvider()),
         ChangeNotifierProvider(create: (_) => IqacDataProvider()),
         ChangeNotifierProvider(create: (_) => TransportDataProvider()),
+        ChangeNotifierProvider(create: (_) => SportsDataProvider()),
       ],
       child: const MyApp(),
     ),
@@ -260,7 +262,7 @@ class HomeScreen extends StatelessWidget {
                   Custom_Container(
                       imgaddress: "asserts/sports.svg",
                       title: "Sports",
-                      onTap: () {}
+                      onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>SportsScreen()))
                   ),
                 ],
               )
