@@ -15,7 +15,7 @@ import 'package:provider/provider.dart';
 
 import 'dummy.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -29,8 +29,8 @@ void main() async{
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => PrincipalDataProvider()),
-        ChangeNotifierProvider(create: (_) =>   DeansDataProvider()),
-        ChangeNotifierProvider(create: (_) =>   HodsDataProvider()),
+        ChangeNotifierProvider(create: (_) => DeansDataProvider()),
+        ChangeNotifierProvider(create: (_) => HodsDataProvider()),
         ChangeNotifierProvider(create: (_) => CommitteeDataProvider()),
         ChangeNotifierProvider(create: (_) => IqacDataProvider()),
       ],
@@ -61,7 +61,8 @@ class SplashScreen extends StatefulWidget {
   }
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
 
@@ -138,122 +139,194 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: Padding(
-          padding: const EdgeInsets.only(left: 5, top: 2, bottom: 2),
+          padding: const EdgeInsets.all(8.0),
           child: ClipOval(
-            child: Image.asset("asserts/adityalogo.jpg", fit: BoxFit.fill),
+            child: Image.asset(
+              "asserts/adityalogo.jpg",
+            ),
           ),
         ),
         centerTitle: true,
         title: const Text(
           "ACET CONTACTS",
           style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.bold, fontStyle: FontStyle.italic),
+            color: Color.fromARGB(255, 255, 255, 255),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        backgroundColor: Colors.orange.shade800,
+        backgroundColor: Color.fromARGB(206, 255, 146, 37),
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context)=>InfoPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SearchScreen()));
             },
-            icon: const Icon(Icons.info_outlined, color: Colors.white, size: 35),
+            icon: const Icon(Icons.search_outlined,
+                color: Colors.white, size: 35),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(
-                      imgaddress: "asserts/person1.svg",
-                      title: "Principal",
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: isLargeScreen
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.spaceAround,
+                  children: [
+                    Custom_Container(
+                        imgaddress: "asserts/person1.svg",
+                        title: "Principal",
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const PrincipalScreen()))),
+                    Custom_Container(
+                        imgaddress: "asserts/person2.svg",
+                        title: "Deans",
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const DeansScreen()))),
+                    Custom_Container(
+                      imgaddress: "asserts/person4.svg",
+                      title: "HOD's",
                       onTap: () => Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => const PrincipalScreen()))),
-                  Custom_Container(
-                      imgaddress: "asserts/person2.svg",
-                      title: "Deans",
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Hods_Screen())),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: isLargeScreen
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.spaceAround,
+                  children: [
+                    Custom_Container(
+                        imgaddress: "asserts/departments.svg",
+                        title: "Departments",
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                const Departments_Screen()))),
+                    Custom_Container(
+                        imgaddress: "asserts/iqac_coordinators.svg",
+                        title: "IQAC",
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Iqac_Screen()))),
+                    Custom_Container(
+                      imgaddress: "asserts/committee.svg",
+                      title: "Committee",
                       onTap: () => Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => const DeansScreen()))),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(
-                    imgaddress: "asserts/person4.svg",
-                    title: "HOD's",
-                    onTap: () => Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => const Hods_Screen())),
-                  ),
-                  Custom_Container(
-                      imgaddress: "asserts/departments.svg",
-                      title: "Departments",
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Committee_Screen())),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: isLargeScreen
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.spaceAround,
+                  children: [
+                    Custom_Container(
+                        imgaddress: "asserts/transport.svg",
+                        title: "Transport",
+                        onTap: () {}),
+                    Custom_Container(
+                        imgaddress: "asserts/hostel.svg",
+                        title: "Hostels",
+                        onTap: () {}),
+                    Custom_Container(
+                        imgaddress: "asserts/emergency.svg",
+                        title: "Emergency",
+                        onTap: () async {
+                          // insert_principal_data();
+                        }),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: isLargeScreen
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.spaceAround,
+                  children: [],
+                ),
+                Row(
+                  mainAxisAlignment: isLargeScreen
+                      ? MainAxisAlignment.spaceEvenly
+                      : MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
                       onTap: () => Navigator.push(
-                          context, MaterialPageRoute(builder: (context) => const Departments_Screen()))),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(
-                      imgaddress: "asserts/iqac_coordinators.svg",
-                      title: "IQAC",
-                      onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>Iqac_Screen()))),
-                  Custom_Container(
-                    imgaddress: "asserts/committee.svg",
-                    title: "Committee",
-                    onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>Committee_Screen())),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(
-                      imgaddress: "asserts/transport.svg",
-                      title: "Transport",
-                      onTap: () {}),
-                  Custom_Container(
-                      imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: () {}),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(
-                      imgaddress: "asserts/emergency.svg",
-                      title: "Emergency",
-                      onTap: () async{
-                        insert_principal_data();
-                      }),
-                  Custom_Container(
-                      imgaddress: "asserts/searchperson.svg",
-                      title: "Search",
-                      onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>SearchScreen()))),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: isLargeScreen
-                    ? MainAxisAlignment.spaceEvenly
-                    : MainAxisAlignment.spaceAround,
-                children: [
-                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLoginPage())),),
-                ],
-              )
-            ],
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const InfoPage(),
+                        ),
+                      ),
+                      child: Container(
+                        height: screenSize.height / 6,
+                        width: screenSize.width / 3.5,
+                        decoration: BoxDecoration(
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12,
+                              offset: Offset(
+                                0.0,
+                                6.0,
+                              ),
+                              blurRadius: 6.0,
+                              spreadRadius: 2.0,
+                            ), //BoxShadow
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ), //BoxShadow
+                          ],
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: SizedBox(
+                          height: 50,
+                          width: 50,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image(
+                                  height: screenSize.height / 12,
+                                  width: screenSize.width / 6,
+                                  image: AssetImage("asserts/adityalogo.jpg")),
+                              const Text(
+                                "Info",
+                                style: TextStyle(fontSize: 16),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Custom_Container(
+                      imgaddress: "asserts/admin.svg",
+                      title: "Admin",
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AdminLoginPage())),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
