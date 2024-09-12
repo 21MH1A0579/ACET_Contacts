@@ -1,6 +1,5 @@
 
 import 'dart:io';
-import 'package:aditya_contacts/screens/Admin.dart';
 import 'package:aditya_contacts/widgets/constants.dart';
 import 'package:aditya_contacts/widgets/user_image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +13,7 @@ class ProfileUpdateScreen extends StatefulWidget {
   final DocumentSnapshot<Object?>? imagedata;
   final bool? IsAlreadyImage;
   final String? Username;
-  ProfileUpdateScreen({super.key, required this.data, required this.department, this.imagedata, required this.IsAlreadyImage, required this.Username});
+  const ProfileUpdateScreen({super.key, required this.data, required this.department, this.imagedata, required this.IsAlreadyImage, required this.Username});
 
   @override
   _ProfileUpdateScreenState createState() => _ProfileUpdateScreenState();
@@ -45,7 +44,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       });
       // Initialize Firebase if not already initialized (depends on how you've structured your app)
       await Firebase.initializeApp(); // Ensure Firebase is initialized
-      
+
       FirebaseStorage storage = FirebaseStorage.instanceFor(bucket: 'gs://aditya-ff271.appspot.com');
       final storageRef = storage.ref().child(widget.department!).child(
           '${widget.Username!}.jpg');
@@ -54,25 +53,25 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
         return;
       }
       if(widget.IsAlreadyImage!)
-        {
-          try {
-            storageRef.delete();
-            await storageRef.putFile(_pickedImg!);
-            final imageUrl = await storageRef.getDownloadURL();
-            Map<String,dynamic>newimagedata;
-            newimagedata={'imgurl':imageUrl};
-            await FirebaseFirestore.instance.collection("imagedata").doc(
-                widget.Username).update(newimagedata);
+      {
+        try {
+          storageRef.delete();
+          await storageRef.putFile(_pickedImg!);
+          final imageUrl = await storageRef.getDownloadURL();
+          Map<String,dynamic>newimagedata;
+          newimagedata={'imgurl':imageUrl};
+          await FirebaseFirestore.instance.collection("imagedata").doc(
+              widget.Username).update(newimagedata);
 
-          }
-          catch(e){
-            setState(() {
-              IsLoading=false;
-            });
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating Image: $e'),backgroundColor: Colors.red,));
-          }
+        }
+        catch(e){
+          setState(() {
+            IsLoading=false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error updating Image: $e'),backgroundColor: Colors.red,));
+        }
 
-        }else{
+      }else{
         setState(() {
           IsLoading=true;
         });
@@ -84,32 +83,32 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
           'imagepath':'${widget.department}/${widget.Username}.jpg',
           'imgurl':imageUrl
         };
-       await FirebaseFirestore.instance.collection('imagedata').doc(widget.Username).set(newinsertingimagedata);
+        await FirebaseFirestore.instance.collection('imagedata').doc(widget.Username).set(newinsertingimagedata);
 
       }
     } catch (e) {
       setState(() {
         IsLoading=false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error Occurred:${e}'),backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error Occurred:$e'),backgroundColor: Colors.red,));
     }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:  AppBar(
-      foregroundColor: Colors.white,
-      centerTitle: true,
-      title: const Text(
-        "UPDATE PROFILE",
-        style: TextStyle(
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontStyle: FontStyle.italic,
+        foregroundColor: Colors.white,
+        centerTitle: true,
+        title: const Text(
+          "UPDATE PROFILE",
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontStyle: FontStyle.italic,
+          ),
         ),
+        backgroundColor: primarycolor,
       ),
-      backgroundColor: primarycolor,
-    ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -184,7 +183,7 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
                 child: ElevatedButton.icon(
                   onPressed: _updateProfile,
                   icon: const Icon(Icons.save, color: Colors.white),
-                  label: IsLoading?Center(child: CircularProgressIndicator(color: Colors.white,),):const Text('Save Changes', style: TextStyle(color: Colors.white)),
+                  label: IsLoading?const Center(child: CircularProgressIndicator(color: Colors.white,),):const Text('Save Changes', style: TextStyle(color: Colors.white)),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                     shape: RoundedRectangleBorder(
@@ -234,9 +233,9 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
       IsLoading=true;
     });
     if(_pickedImg!=null)
-      {
-        UploadImage();
-      }
+    {
+      UploadImage();
+    }
     // Construct the updated data map
     Map<String, dynamic> updatedData = {
       'MobileNo': _mobileController.text,
@@ -245,7 +244,22 @@ class _ProfileUpdateScreenState extends State<ProfileUpdateScreen> {
     };
 
     try {
-      // Update Firestore document using department and EmpId
+      if (widget.data?['Designation']?.contains("HOD")) {
+        QuerySnapshot snapshot = await FirebaseFirestore.instance
+            .collection("HOD'S")
+            .where('EmpId',isEqualTo: widget.Username)
+            .get();
+        final _hods = snapshot.docs.first;
+        Map<String, dynamic> updatedHODsData = {
+          'MobileNo': _mobileController.text,
+          'EmailId': _emailController.text,
+          'EmployeeName': _employeeNameController.text,
+        };
+        await FirebaseFirestore.instance
+            .collection("HOD'S")
+            .doc('${_hods.id}').update(updatedHODsData);
+      }
+
       await FirebaseFirestore.instance
           .collection(widget.department!)
           .doc('${widget.data?['EmpId']} ')
