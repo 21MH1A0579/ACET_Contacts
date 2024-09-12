@@ -174,7 +174,8 @@ class Custom_ListTile extends StatelessWidget {
   final String title;
   final String collectionName;
 
-  const Custom_ListTile({super.key, required this.title, required this.collectionName});
+  const Custom_ListTile(
+      {super.key, required this.title, required this.collectionName});
 
   @override
   Widget build(BuildContext context) {
@@ -193,13 +194,22 @@ class Custom_ListTile extends StatelessWidget {
         backgroundColor: primarycolor,
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection(collectionName).orderBy('EmployeeName').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection(collectionName)
+            .orderBy('EmployeeName')
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
+            return Center(
+                child: CircularProgressIndicator(
+                  color: primarycolor,
+                ));
           }
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: CircularProgressIndicator(color: primarycolor,));
+            return Center(
+                child: CircularProgressIndicator(
+                  color: primarycolor,
+                ));
           }
           var persons = snapshot.data!.docs.map((doc) {
             return {
@@ -225,9 +235,9 @@ class Custom_ListTile extends StatelessWidget {
                       name: persons[index]["EmployeeName"]!,
                       designation: persons[index]["Designation"]!,
                       email: persons[index]["EmailId"]!,
-                      title: "EMPLOYEE ID:${persons[index]["EmpId"]!}",
+                      title: persons[index]["EmpId"]!,
                       phonenumber1: persons[index]["MobileNo"]!,
-                      phonenumber2: "",
+                      phonenumber2: "null",
                     ),
                   ),
                 ),
@@ -240,14 +250,15 @@ class Custom_ListTile extends StatelessWidget {
   }
 }
 
-
-
-
 class Custom_ListItemForEmployee extends StatelessWidget {
   final String name;
   final String empid;
   final VoidCallback ontap;
-  const Custom_ListItemForEmployee({super.key,required this.name,required this.ontap, required this.empid});
+  const Custom_ListItemForEmployee(
+      {super.key,
+        required this.name,
+        required this.ontap,
+        required this.empid});
 
   @override
   Widget build(BuildContext context) {
@@ -256,14 +267,25 @@ class Custom_ListItemForEmployee extends StatelessWidget {
       child: ListTile(
         onTap: ontap,
         selectedColor: primarycolor,
-        tileColor:Colors.white,
-        contentPadding:  const EdgeInsets.only(left: 20,right: 20,top: 2,bottom: 2),
+        tileColor: Colors.white,
+        contentPadding:
+        const EdgeInsets.only(left: 20, right: 20, top: 2, bottom: 2),
         shape: RoundedRectangleBorder(
-            side: const BorderSide(color: Colors.black12,width: 0.85),
+            side: const BorderSide(color: Colors.black12, width: 0.85),
             borderRadius: BorderRadius.circular(10)),
-        title: Text(name,style:const TextStyle(fontWeight: FontWeight.w500,fontSize: 18),),
-        subtitle: Text("EMPLOYEE ID:$empid",style: const TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-        trailing: Icon(Icons.arrow_forward_ios_sharp,size: 30,color: primarycolor,),
+        title: Text(
+          name,
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        ),
+        subtitle: Text(
+          "EMPLOYEE ID:$empid",
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        trailing: Icon(
+          Icons.arrow_forward_ios_sharp,
+          size: 30,
+          color: primarycolor,
+        ),
       ),
     );
   }

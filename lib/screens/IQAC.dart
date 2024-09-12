@@ -53,10 +53,10 @@ class Iqac_Screen extends StatelessWidget {
                         builder: (context) => ProfileWidget(
                           name: iqac['Employee.name'] ?? 'N/A',
                           phonenumber1: iqac['Number']?.toString() ?? 'N/A',
-                          phonenumber2: '',
-                          designation: '---',
+                          phonenumber2: 'null',
+                          designation: 'IQAC-${iqac['Dept']}',
                           email: iqac['Email.Id'] ?? 'N/A',
-                          title: "IQAC - ${iqac['Dept'] ?? 'N/A'}",
+                          title: "NODATA",
                         ),
                       ),
                     );
