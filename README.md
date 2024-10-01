@@ -3,16 +3,50 @@
 ## Overview
 **ACET CONTACTS** is a mobile application designed to provide comprehensive contact information for the staff of Aditya College of Engineering and Technology. Built using Flutter and Firebase, the application aims to streamline communication by offering easily accessible contact details categorized by departments, HODs, Deans, the Principal, and various committees. Users can also search for specific staff members by name or employee ID.
 
-## Features
-## App Screenshots
+
 ## App Screenshots
 
-### Splash Screen and Login Screen (Side by Side)
+### Splash Screen and Info Screen (Side by Side)
 <div style="display: flex; justify-content: space-between;">
     <img src="asserts/APP_IMAGES/SplashScreen.jpg" alt="Splash Screen" width="200" height="400"/>
-    <img src="asserts/APP_IMAGES/LoginScreen.jpg" alt="Login Screen" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/InfoScreen.jpg" alt="Info Screen" width="200" height="400"/>
 </div>
 
+### Login Screen and Update Login Screen (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/LoginScreen.jpg" alt="Login Screen" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/UpdateLoginScreen.jpg" alt="Update Login Screen" width="200" height="400"/>
+</div>
+
+### Main Screen 1 and Main Screen 2 (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/MainScreen1.jpg" alt="Main Screen 1" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/MainScreen2.jpg" alt="Main Screen 2" width="200" height="400"/>
+</div>
+
+### Search by Employee Name and Search by Employee ID (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/SearchByEmpName.jpg" alt="Search by Employee Name" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/SearchByEmpID.jpg" alt="Search by Employee ID" width="200" height="400"/>
+</div>
+
+### Profile Screen and Update Profile Screen (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/ProfileScreen.jpg" alt="Profile Screen" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/UpdateProfileScreen.jpg" alt="Update Profile Screen" width="200" height="400"/>
+</div>
+
+### Deans Screen and Departments Screen (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/DeansScreen.jpg" alt="Deans Screen" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/DepartmentsScreen.jpg" alt="Departments Screen" width="200" height="400"/>
+</div>
+
+### Committees Screen (Solo)
+<img src="asserts/APP_IMAGES/CommitteScreen.jpg" alt="Committees Screen" width="200" height="400"/>
+
+
+## Features
 
 ### Categorized Contact Information
 - **Departments**: Access contact details of staff members organized by their respective departments.
