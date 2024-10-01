@@ -5,42 +5,14 @@
 
 ## Features
 ## App Screenshots
+## App Screenshots
 
-### Committees Screen
-<img src="asserts/APP_IMAGES/CommitteScreen.jpg" alt="Committees Screen" width="200" height="400"/>
+### Splash Screen and Login Screen (Side by Side)
+<div style="display: flex; justify-content: space-between;">
+    <img src="asserts/APP_IMAGES/SplashScreen.jpg" alt="Splash Screen" width="200" height="400"/>
+    <img src="asserts/APP_IMAGES/LoginScreen.jpg" alt="Login Screen" width="200" height="400"/>
+</div>
 
-### Deans Screen
-<img src="asserts/APP_IMAGES/DeansScreen.jpg" alt="Deans Screen" width="200" height="400"/>
-
-### Departments Screen
-<img src="asserts/APP_IMAGES/DepartmentsScreen.jpg" alt="Departments Screen" width="200" height="400"/>
-
-### Info Screen
-<img src="asserts/APP_IMAGES/InfoScreen.jpg" alt="Info Screen" width="200" height="400"/>
-
-### Login Screen
-<img src="asserts/APP_IMAGES/LoginScreen.jpg" alt="Login Screen" width="200" height="400"/>
-
-### Main Screen (View 1)
-<img src="asserts/APP_IMAGES/MainScreen1.jpg" alt="Main Screen 1" width="200" height="400"/>
-
-### Main Screen (View 2)
-<img src="asserts/APP_IMAGES/MainScreen2.jpg" alt="Main Screen 2" width="200" height="400"/>
-
-### Profile Screen
-<img src="asserts/APP_IMAGES/ProfileScreen.jpg" alt="Profile Screen" width="200" height="400"/>
-
-### Search by Employee ID
-<img src="asserts/APP_IMAGES/SearchByEmpID.jpg" alt="Search by Employee ID" width="200" height="400"/>
-
-### Search by Employee Name
-<img src="asserts/APP_IMAGES/SearchByEmpName.jpg" alt="Search by Employee Name" width="200" height="400"/>
-
-### Splash Screen
-<img src="asserts/APP_IMAGES/SplashScreen.jpg" alt="Splash Screen" width="200" height="400"/>
-
-### Update Login Screen
-<img src="asserts/APP_IMAGES/UpdateLoginScreen.jpg" alt="Update Login Screen" width="200" height="400"/>
 
 ### Categorized Contact Information
 - **Departments**: Access contact details of staff members organized by their respective departments.
