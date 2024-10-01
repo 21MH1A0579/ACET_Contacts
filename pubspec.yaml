@@ -43,8 +43,8 @@ dependencies:
   connectivity_plus:
   image_picker:
   provider:
-  contacts_service:
   permission_handler:
+  contacts_service:
 
 dev_dependencies:
   flutter_test:

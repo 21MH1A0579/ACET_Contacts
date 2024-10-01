@@ -233,7 +233,7 @@ class HomeScreen extends StatelessWidget {
                       onTap: () =>Navigator.push(context,MaterialPageRoute(builder: (context)=>TransportScreen()))
                   ),
                   Custom_Container(
-                      imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>LoginPage())))
+                      imgaddress: "asserts/hostel.svg", title: "Hostels", onTap: (){})
                 ],
               ),
               Row(
@@ -256,7 +256,7 @@ class HomeScreen extends StatelessWidget {
                     ? MainAxisAlignment.spaceEvenly
                     : MainAxisAlignment.spaceAround,
                 children: [
-                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Admin", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLoginPage())),),
+                  Custom_Container(imgaddress: "asserts/admin.svg", title: "Update Profile", onTap: ()=>Navigator.push(context,MaterialPageRoute(builder: (context)=>AdminLoginPage())),),
 
 
 
